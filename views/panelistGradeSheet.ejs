@@ -99,7 +99,7 @@ rel="stylesheet"
           ><i class="fa fa-duotone fa-marker me-3"></i><span>Report</span></a
         >
         
-        
+       
            
            
           </div>
@@ -147,13 +147,12 @@ rel="stylesheet"
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li>
-           <a class="dropdown-item" href="/logout">Logout</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
           </li>
           
           </ul>
         </li>
-        
-        
+       
         
         
 
@@ -171,54 +170,7 @@ rel="stylesheet"
 <main style="margin-top: 58px;">
   <div class="container pt-4  ms-5 me-5 text-center">
                     
-                    <table class="table table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Thesis Topic</th>
-                            <th scope="col">Year</th>
-                            <th scope="col"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            
-                          <% findallstudentswithpublish.forEach(student => { %>
-  <tr>
-    <th scope="row"><%- student.fName%>  <%- student.lName %></th>
-    <td><%- student.topic %> <span><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal<%- student.ID %>">read More</a></span></td>
-    <td id="status"><%=new Date(student.final_document[0].timestamp).getFullYear() %></td>
-    <td>
-      <form action="/hod/publish/download" method="post" style="display: inline; margin-right: 5px;">
-        <input type="hidden" name="studentID" value="<%- student.ID %>">
-        <button type="submit" id="download" class="btn btn-outline-success" name="status" value="download" >download</button>
-        
-      </form>
-    </td>
-    
-  </tr>
-  
-  <!-- description modal -->
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal<%- student.ID %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel"><%- student.topic %></h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <%- student.description %>
-        </div>
-        <div class="modal-footer">
-          <form action="/supervisor/students/supervise" method="get" style="display: inline; margin-right: 5px;">
-            <button type="submit" id="approve" class="btn btn-outline-success" >Supervise</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-<% }) %>
-
+                    <%= student.ID %>
 
                          
                           

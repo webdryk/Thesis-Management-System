@@ -10,7 +10,7 @@ router.use(flash());
 router.get('/staffregister',(req,res)=>{
   const messages = req.flash('info');
   res.render('staffregister', { messages: messages });
-});
+}); 
 
 router.get('/studentregister',(req,res)=>{
   const messages = req.flash('info');
@@ -31,7 +31,7 @@ router.post('/staffregister',async(req,res)=>{
       if(password){
         staff.create({fName,lName,ID,email,department,role,password})
         req.flash('info', 'User created');
-        res.redirect('/staffregister');
+        res.redirect('/login');
       }
     })
   }
@@ -55,11 +55,11 @@ router.post('/studentregister',async(req,res)=>{
       if(password){
         student.create({fName,lName,ID,email,department,Program,role,password})
         req.flash('info', 'User created');
-        res.redirect('/studentregister');
+        res.redirect('/login');
       }
     })
   }
   
-});
+}); 
 
 module.exports = router;

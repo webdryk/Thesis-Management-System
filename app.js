@@ -162,7 +162,14 @@ io.on('connection', (socket) => {
     });
   });
 
-
+  app.get("/logout", (req, res, next) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/login"); // Redirect to login page after logging out
+    });
+  });
 server.listen(port,'0.0.0.0', ()=>console.log(`server up on ${port}`))
 
 
