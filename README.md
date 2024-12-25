@@ -117,4 +117,4 @@ project-root/
 This project is licensed under the MIT License.
 
 ## Contact
-For inquiries or support, please contact [Amebley Afeti](mailto:amebleyafeti@example.com).
+For inquiries or support, please contact [Amebley Afeti](mailto:saamebley@gmail.com).
