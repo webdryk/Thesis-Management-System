@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
+rel="stylesheet"
+/>
+    <title>Document</title>
+    <style>
+      body {
+      background-image: url('images/login.png');
+      background-repeat: no-repeat;
+background-size: cover;
+    }
+    </style>
+  </style>
+</head>
+  <body>
+    
+    <div class="container">
+      <div class="card " style="width: 50%; margin-top: 5%;">
+          <div class="card-item p-5"style="">
+                  <!-- Pills navs -->
+  <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+     
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="tab-register" data-mdb-toggle="pill" href="#pills-register" role="tab"
+          aria-controls="pills-register" aria-selected="true">Register</a>
+      </li>
+    </ul>
+    <!-- Pills navs -->
+    <div class="span" style="color: red;"><% if (messages) { %>
+                      
+      <%= messages %>
+      
+     <% } %></div>
+    
+     <div class="tab-content" >
+      <div class="tab-pane fade show active" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+        <form action="/staffregister" method="post">
+          
+    <div class="row">
+      <div class="col">
+         <!-- Name input -->
+         <div class="form-outline mb-4">
+          <input type="text" id="fName" name="fName" class="form-control" required/>
+          <label class="form-label" for="fName">First Name</label>
+        </div>
+      </div>
+      <div class="col">
+        <!-- Name input -->
+        <div class="form-outline mb-4">
+          <input type="text" id="lName" name="lName" class="form-control" required/>
+          <label class="form-label" for="lName">Last Name</label>
+        </div>
+      </div>
+
+    </div>
+          
+<div class="row">
+  <div class="col">
+    <!-- Name input -->
+    <div class="form-outline mb-4">
+      <input type="text" id="ID" name="ID" class="form-control" required/>
+      <label class="form-label" for="ID">Staff ID</label>
+    </div>
+  </div>
+  <div class="col">
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+      <input type="email" id="email" name="email" class="form-control" required />
+      <label class="form-label" for="email">Email</label>
+    </div>
+  </div>
+</div>
+<div class="row mb-4">
+  <div class="row mb-4">
+  <div class="col">
+    <label for="faculty">Faculty</label>
+    <select class="form-select" aria-label="Default select example" name="faculty" id="faculty" required>
+      <option data-hidden="true"></option>
+      <option value="FACULTY OF ENGINEERING">FACULTY OF ENGINEERING</option>
+      <option value="FACULTY OF BUILT ENVIRONMENT">FACULTY OF BUILT ENVIRONMENT</option>
+      <option value="FACULTY OF APPLIED SCIENCES">FACULTY OF APPLIED SCIENCES</option>
+      <option value="FACULTY OF APPLIED ART">FACULTY OF APPLIED ART</option>
+      <option value="FACULTY OF BUSINESS">FACULTY OF BUSINESS</option>
+    </select>
+  </div>
+  <div class="col">
+    <label for="department">Department</label>
+    <select class="form-select" aria-label="Default select example" name="department" id="department" required>
+      <option data-hidden="true"></option>
+    </select>
+  </div>
+</div>
+
+<script>
+  const facultySelect = document.getElementById('faculty');
+  const departmentSelect = document.getElementById('department');
+
+  // Define a JavaScript object to map faculties to their respective departments.
+  const departmentData = {
+    "FACULTY OF ENGINEERING": [
+      "Mechanical Engineering Department",
+      "Electrical/Electronic Engineering Department",
+      "Civil Engineering Department"
+    ],
+    "FACULTY OF BUILT ENVIRONMENT": [
+      "Department of Interior Design and Upholstery Technology",
+      "Department of Building Technology"
+    ],
+    "FACULTY OF APPLIED SCIENCES": [
+      "Applied Mathematics and Statistics",
+      "Science Laboratory Technology",
+      "Computer Science",
+      "Medical Laboratory Technology"
+    ],
+    "FACULTY OF APPLIED ART": [
+      "Department of Hotel Catering & Institutional Management (HCIM)",
+      "Fashion Design & Textile Department",
+      "Department of Liberal Studies and Communications Technology"
+    ],
+    "FACULTY OF BUSINESS": [
+      "Accountancy and Finance",
+      "Management and Public Administration",
+      "Procurement and Supply Chain Management",
+      "Marketing"
+    ]
+  };
+
+  // Function to update the department options based on the selected faculty.
+  function updateDepartmentOptions() {
+    const selectedFaculty = facultySelect.value;
+    departmentSelect.innerHTML = '<option data-hidden="true"></option>';
+
+    if (departmentData[selectedFaculty]) {
+      departmentData[selectedFaculty].forEach((department) => {
+        const option = document.createElement('option');
+        option.value = department;
+        option.textContent = department;
+        departmentSelect.appendChild(option);
+      });
+    }
+  }
+
+  // Add an event listener to the faculty select to update the department options.
+  facultySelect.addEventListener('change', updateDepartmentOptions);
+
+  // Initialize the department options based on the default faculty.
+  updateDepartmentOptions();
+</script>
+  <div class="col">
+    <label for="role">Role</label>
+    <select class="form-select " aria-label="Default select example" name="role" required>
+      <option data-hidden="true"></option>
+      <option value="HOD">Head Of Department</option>
+      <option value="supervisor">Supervisor</option>
+      
+    </select>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col">
+  <!-- Password input -->
+  <div class="form-outline mb-4">
+    <input type="password" id="password" name="cPassword" class="form-control"  required/>
+    <label class="form-label" for="password">Password</label>
+  </div>
+    </div>
+    <div class="col">
+    <!-- Repeat Password input -->
+    <div class="form-outline mb-4">
+      <input type="password" id="registerRepeatPassword" name="registerRepeatPassword" class="form-control" required />
+      <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+    </div>
+    </div>
+  </div>
+      <!-- Checkbox -->
+      <div class="form-check d-flex justify-content-center mb-4">
+        <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+          aria-describedby="registerCheckHelpText" />
+        <label class="form-check-label" for="registerCheck">
+          I have read and agree to the terms
+        </label>
+      </div>      
+  
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-3">Register</button>
+          </form>
+        </div>
+      </div>
+      <!-- Pills content -->
+            </div>
+          
+    
+        </div>
+      
+    
+      <!-- MDB -->
+    <script
+    type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+  </body>
+</html>

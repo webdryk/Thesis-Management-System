@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Font Awesome -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
+rel="stylesheet"
+/>
+
+<style>
+    body {
+  background-color: #fbfbfb;
+}
+@media (min-width: 991.98px) {
+  main {
+    padding-left: 240px;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding: 58px 0 0; /* Height of navbar */
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  width: 240px;
+  z-index: 600;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+  }
+}
+.sidebar .active {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+</style>
+    <title>Document</title>
+</head>
+  <body>
+    
+   
+     
+    <!--Main Navigation-->
+<header>
+  <!-- Sidebar -->
+  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+    <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4">
+            <a
+              href="/HOD"
+              class="list-group-item list-group-item-action py-2 ripple"
+              aria-current="true"
+            >
+              <span>Main dashboard</span>
+            </a>
+            <a href="/HOD" class="list-group-item list-group-item-action py-2 ripple ">
+              <i class=" fa fa-light fa-gauge me-3"></i><span>Dashboard</span>
+            </a>
+            <a href="/HOD/thesis" class="list-group-item list-group-item-action py-2 ripple"
+              ><i class="fa fa-book fa-fw me-3"></i><span>Thesis</span></a
+            >
+            <a href="/HOD/students" class="list-group-item list-group-item-action py-2 ripple"
+            ><i class="fa fa-duotone fa-users me-3"></i><span>Students</span></a
+          >
+            
+            <a href="/HOD/HODapproval" class="list-group-item list-group-item-action py-2 ripple active"
+            ><i class="fas fa-lock fa-fw me-3"></i><span>Approval</span></a
+          >
+            <a href="/HOD/Report" class="list-group-item list-group-item-action py-2 ripple"
+              ><i class="fa fa-duotone fa-marker me-3"></i><span>Report</span></a
+            >
+            
+            <a href="/logout" class="list-group-item list-group-item-action py-2 ripple">
+              <i class=" fa fa-light fa-right-from-bracket me-3"></i><span>LogOut</span>
+            </a>
+           
+          </div>
+    </div>
+  </nav>
+  <!-- Sidebar -->
+
+  <!-- Navbar -->
+  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#sidebarMenu"
+        aria-controls="sidebarMenu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Brand -->
+      <a class="navbar-brand" href="#">
+        <!-- <img
+          src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+          height="25"
+          alt="MDB Logo"
+          loading="lazy"
+        /> -->
+      </a>
+     
+       <!-- Right links -->
+       <ul class="navbar-nav ms-auto d-flex flex-row">
+       
+       
+        <li class="nav-item dropdown  me-5">
+          welcome, 
+          <a class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <%- user.fName%>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            
+          
+          </ul>
+        </li>
+        
+       
+        
+        
+
+
+      </ul>
+    </div>
+    <!-- Container wrapper -->
+      
+  </nav>
+  <!-- Navbar -->
+</header>
+<!--Main Navigation-->
+
+            <!--Main layout-->
+<main style="margin-top: 58px;">
+  <div class="container pt-4  ms-5 me-5 text-center" >
+                
+              <nav class="m-5">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <a href="#nav-home" class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Student</a>
+                  <a href="#nav-profile" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Supervisor</a>
+                  <a href="#nav-contact" class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Panelist</a>
+                  <a href="#nav-disabled" class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false">Assign Student</a>
+                </div>
+              </nav>
+              <div class="tab-content mx-5" id="nav-tabContent">
+                
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Thesis Topic</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Approval</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <% listOfStudent.forEach(student => { %>
+                            <tr>
+                              <th scope="row"><%- student.fName%>  <%- student.lName %></th>
+                              <td><%- student.topic %> <span><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">read More</a></span></td>
+                              <td id="status"><%- student.thesisStatus %></td>
+                              <td>
+                                
+                                <form action="/HOD/HODapproval/approve" method="post" style="display: inline; margin-right: 5px;">
+                                  <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                <button type="submit" id="approve" class="btn btn-outline-success" >Approve</button>
+                              </form>
+                              <form action="/HOD/HODapproval/reject" method="post" style="display: inline;">
+                                <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                <button type="submit" id="reject" class="btn btn-outline-danger">Reject</button>
+                              </form>
+                            </td>
+                              
+                            <script>
+                            let status=  document.getElementById('status').innerText
+                            if(status==='Approved'){
+                              document.getElementById('approve').disabled = true;
+                            }
+                            if(status==='Rejected'){
+                              document.getElementById('reject').disabled = true;
+                            }
+                            
+                            </script>
+                            </tr>
+                          <!-- description modal -->
+                             <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="exampleModalLabel"><%- student.topic %></h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <%- student.description %>
+                                </div>
+                                <div class="modal-footer">
+                                  <form action="/HOD/HODapproval/approve" method="post" style="display: inline; margin-right: 5px;">
+                                    <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                  <button type="submit" id="approve" class="btn btn-outline-success" >Approve</button>
+                                </form>
+                                <form action="/HOD/HODapproval/reject" method="post" style="display: inline;">
+                                  <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                  <button type="submit" id="reject" class="btn btn-outline-danger">Reject</button>
+                                </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <% }) %>
+
+                      </table>
+                </div>
+                <!-- supervisor Approval -->
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                  <table class="table table-hover">
+                    <thead>
+                        <th scope="col">Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Role</th>
+                    </thead>
+                    <tbody>
+
+                      <% listOfSupervisor.forEach(supervisor => { %>
+                        <tr>
+                          <th scope="row"><%- supervisor.fName%>  <%- supervisor.lName %></th>
+                          <td><%- supervisor.department %> </td>
+                          <td id="status"><%- supervisor.role %></td>
+                          </tr>
+                          <% })%>
+                </table>
+
+                </div>
+                <!-- panelist Approval -->
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+                  <table class="table table-hover">
+                    <thead>
+                    
+                        <th scope="col">Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Status</th>
+                        
+                   
+                    </thead>
+                    <tbody>
+
+                      <% listOfPanelist.forEach(panelist => { %>
+                        <tr>
+                          <th scope="row"><%- panelist.fName%>  <%- panelist.lName %></th>
+                          <td><%- panelist.department %> </td>
+                          <td ><%- panelist.role %></td>
+                          <td>  <form action="/HOD/HODapproval/activate" method="post" style="display: inline; margin-right: 5px;">
+                            <input type="hidden" name="staffID" value="<%- panelist.ID %>">
+                          <button type="submit" id="activate" class="btn btn-outline-success" >Activate</button>
+                        </form>
+                        <form action="/HOD/HODapproval/deactivate" method="post" style="display: inline;">
+                          <input type="hidden" name="staffID" value="<%- panelist.ID %>">
+                          <button type="submit" id="deactivate" class="btn btn-outline-danger">Deactivate</button>
+                        </form></td>
+                          </tr>
+
+                          <% if (panelist.panelist=='activated') { %>
+                            <script>
+                            document.getElementById('activate').disabled = true;
+                            </script>
+                           
+                          <% }else if(panelist.panelist=='deactivated'){%>
+                            <script>
+                              document.getElementById('deactivate').disabled = true;
+                              </script>
+
+                            <%    } %>
+                          <% })%>
+
+                          
+                          
+                </table>
+
+                </div>
+                <!-- Assign Student to Supervisor -->
+                <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">
+
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Thesis Topic</th>
+                        <th scope="col">Supervisor</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <% listOfStudentToAssign.forEach(studentapproved => { %>
+                        <tr>
+                          <th scope="row"><%- studentapproved.fName%>  <%- studentapproved.lName %></th>
+                          <td><%- studentapproved.topic %> <span><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal1">read More</a></span></td>
+                       
+                          <td>
+                            <div class="supervisor">
+                            <form action="/HOD/HODapproval/assign" method="post" style="display: inline; margin-right: 5px;" >
+                            <select class="form-select" id="supervisorName" aria-label="Default select example" name="supervisorAssigned" placeholder="select supervisor">
+                            
+                            <% listOfSupervisor.forEach(supervisor => { %>
+                              <option value="<%- supervisor.ID %>"><%- supervisor.fName %> <%- supervisor.lName %></option>
+                            <% }) %>
+                    
+                          </select>
+                           
+                        </div>
+                        </td>
+                          <td>
+                            
+                            
+                              <input type="hidden" name="studentID" value="<%- studentapproved.ID %>">
+                            <button type="submit" id="assign" class="btn btn-outline-success" >Assign</button>
+                          </form>
+
+                            <% if (studentapproved.supervisor) { %>
+
+                              <script>
+                                document.getElementById('assign').disabled = true;
+                                document.getElementById('supervisorName').disabled = true;
+                                document.getElementById('supervisorName').innerHTML=`<option value="<%- studentapproved.supervisor %>" selected><%- studentapproved.supervisor %> </option>`
+                                
+                                </script>
+                            <% } %> 
+                            
+                      
+                          
+                        </td>
+                          
+                        
+                        
+                        
+                        </tr>
+                      <!-- description modal -->
+                         <!-- Modal -->
+                      <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="exampleModalLabel"><%- studentapproved.topic %></h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <%- studentapproved.description %>
+                            </div>
+                            <div class="modal-footer">
+                              close
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <% }) %>
+
+                     
+                      
+                     
+                      
+                      
+                     
+                  </table>
+
+                </div>
+              </div>
+            </div>
+                  
+            </div>
+            </div>
+        </div>
+      </div>
+
+      <script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>
