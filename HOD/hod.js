@@ -1,6 +1,6 @@
 const router= require('express').Router()
-const Staff = require('../db/staffdb')
-const Student = require('../db/studentdb')
+const Staff = require('../db/models/Staff')
+const Student = require('../db/models/Student')
 const fs= require('fs')
 const path = require("path");
 

@@ -204,7 +204,8 @@ const registerRouter = require("./register/register");
 const hodRouter = require("./HOD/hod");
 const studentRouter = require("./student/student");
 const supervisorRouter = require("./supervisor/supervisor");
-const { Staff, Student } = require("./db/models");
+const Student = require("./db/models/Student");
+const Staff = require("./db/models/Staff")
 const { saveChatMessage } = require("./middleware/chat");
 const { isAuthenticated } = require("./middleware/auth");
 
@@ -252,9 +253,38 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Authentication strategies
-const configurePassport = require("./config/passport");
-configurePassport(passport);
+// Passport configuration
+async function findUserByID(ID) {
+  return await Staff.findOne({ ID }) || await Student.findOne({ ID });
+}
+
+passport.use(
+  new LocalStrategy(
+    { usernameField: "ID" },
+    async (ID, password, done) => {
+      try {
+        const user = await findUserByID(ID);
+        
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+          return done(null, false, { message: "Incorrect username or password." });
+        }
+        
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
+
+passport.serializeUser((user, done) => done(null, user.ID));
+passport.deserializeUser(async (id, done) => {
+  try {
+    done(null, await findUserByID(id));
+  } catch (error) {
+    done(error);
+  }
+});
 
 // Routes
 app.use("/", registerRouter);

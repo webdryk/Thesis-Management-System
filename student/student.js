@@ -310,7 +310,8 @@ const fs = require("fs");
 const multer = require("multer");
 const mammoth = require("mammoth");
 const PDFDocument = require("pdfkit");
-const { Student, Staff } = require("../db/models");
+const Student = require("../db/models/Student");
+const Staff = require("../db/models/Staff");
 const { isAuthenticated, isStudent } = require("../middleware/auth");
 const { saveChatMessage } = require("../middleware/chat");
 

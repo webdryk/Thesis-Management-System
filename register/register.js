@@ -1,8 +1,8 @@
 const mongoose=require('mongoose')
 const bcrypt= require('bcrypt')
 const router= require('express').Router()
-const staff= require('../db/staffdb')
-const student= require('../db/studentdb')
+const staff= require('../db/models/Staff')
+const student= require('../db/models/Student')
 const flash = require('connect-flash');
 
 router.use(flash());
