@@ -302,9 +302,10 @@ app.get("/", (req, res) => {
 
 // Auth routes
 app.get("/login", csrfProtection, (req, res) => {
+  const messages = req.flash("error"); // Changed from "info" to "error" to match your login template
   res.render("login", { 
     csrfToken: req.csrfToken(),
-    messages: req.flash() 
+    messages: messages.length ? messages : null // Match the template expectation
   });
 });
 
@@ -312,7 +313,7 @@ app.post("/login", authLimiter, csrfProtection, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
-      req.flash("error", info.message);
+      req.flash("error", info.message); // Changed from "info" to "error"
       return res.redirect("/login");
     }
 
