@@ -176,22 +176,37 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const http = require("http");
 const socketIO = require("socket.io");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const csrf = require("csurf");
+const cookieParser = require("cookie-parser");
 
-// Load environment variables once at the start
+// Load environment variables
 require("dotenv").config();
 
-const port = process.env.PORT || 3000;
+// Initialize Express app
 const app = express();
+const port = process.env.PORT || 3000;
+
+// Security middleware
+app.use(helmet());
+app.use(cookieParser());
+
+// Rate limiting for auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
 
 // Database and route imports
 const conn = require("./db/conn");
-const register = require("./register/register");
-const hodRoute = require("./HOD/hod");
-const studentRoute = require("./student/student");
-const supervisorRoute = require("./supervisor/supervisor");
-const Staff = require("./db/staffdb");
-const Student = require("./db/studentdb");
+const registerRouter = require("./register/register");
+const hodRouter = require("./HOD/hod");
+const studentRouter = require("./student/student");
+const supervisorRouter = require("./supervisor/supervisor");
+const { Staff, Student } = require("./db/models");
 const { saveChatMessage } = require("./middleware/chat");
+const { isAuthenticated } = require("./middleware/auth");
 
 // Server setup
 const server = http.createServer(app);
@@ -203,20 +218,32 @@ app.set("view engine", "ejs");
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Session configuration
 const sessionConfig = {
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  name: "sessionId",
   cookie: {
-    secure: process.env.NODE_ENV === "production", // Enable secure cookies in production
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
+    sameSite: "strict",
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 };
 app.use(session(sessionConfig));
+
+// CSRF protection (exclude API routes)
+const csrfProtection = csrf({ cookie: true });
+app.use((req, res, next) => {
+  if (!req.path.startsWith("/api")) {
+    return csrfProtection(req, res, next);
+  }
+  next();
+});
 
 // Flash messages
 app.use(flash());
@@ -225,77 +252,75 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// User lookup utility function
-async function findUserByID(ID) {
-  return await Staff.findOne({ ID }) || await Student.findOne({ ID });
-}
-
-// Passport configuration
-passport.use(
-  new LocalStrategy(
-    { usernameField: "ID" },
-    async (ID, password, done) => {
-      try {
-        const user = await findUserByID(ID);
-        
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-          return done(null, false, { message: "Incorrect username or password." });
-        }
-        
-        return done(null, user);
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
-
-// Serialize/Deserialize User
-passport.serializeUser((user, done) => done(null, user.ID));
-passport.deserializeUser(async (id, done) => {
-  try {
-    done(null, await findUserByID(id));
-  } catch (error) {
-    done(error);
-  }
-});
+// Authentication strategies
+const configurePassport = require("./config/passport");
+configurePassport(passport);
 
 // Routes
-app.use("/", register);
-app.use("/", hodRoute);
-app.use("/", studentRoute);
-app.use("/", supervisorRoute);
+app.use("/", registerRouter);
+app.use("/student", isAuthenticated, studentRouter);
+app.use("/supervisor", isAuthenticated, supervisorRouter);
+app.use("/hod", isAuthenticated, hodRouter);
 
-app.get("/", (req, res) => res.render("index"));
+// Home route
+app.get("/", (req, res) => {
+  res.render("index", { 
+    csrfToken: req.csrfToken(),
+    messages: req.flash()
+  });
+});
 
-app.get("/login", (req, res) => 
-  res.render("login", { messages: req.flash("info") })
-);
+// Auth routes
+app.get("/login", csrfProtection, (req, res) => {
+  res.render("login", { 
+    csrfToken: req.csrfToken(),
+    messages: req.flash() 
+  });
+});
 
-app.post("/login", (req, res, next) => {
+app.post("/login", authLimiter, csrfProtection, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user) {
-      req.flash("info", info.message);
+      req.flash("error", info.message);
       return res.redirect("/login");
     }
 
     req.logIn(user, (err) => {
       if (err) return next(err);
       
-      const redirects = {
+      const redirectPaths = {
         student: "/student",
         supervisor: "/supervisor",
-        HOD: "/HOD"
+        HOD: "/hod",
+        admin: "/admin"
       };
       
-      return res.redirect(redirects[user.role] || "/");
+      return res.redirect(redirectPaths[user.role] || "/");
     });
   })(req, res, next);
 });
 
 app.get("/logout", (req, res) => {
-  req.session.destroy(() => res.redirect("/login"));
+  req.logout();
+  req.session.destroy(() => {
+    res.clearCookie("sessionId");
+    res.redirect("/login");
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render("error", { 
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err : {}
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).render("error", { message: "Page not found" });
 });
 
 // Socket.io logic
@@ -307,7 +332,7 @@ io.on("connection", (socket) => {
       await saveChatMessage(message.sender, message.message, message.studentid);
       socket.to(message.room).emit("chat message", message);
     } catch (error) {
-      console.error("Error saving chat message:", error);
+      console.error("Chat error:", error);
     }
   });
 
@@ -316,6 +341,7 @@ io.on("connection", (socket) => {
 });
 
 // Start server
-server.listen(port, "0.0.0.0", () => 
-  console.log(`Server running on port ${port}`)
-);
+server.listen(port, "0.0.0.0", () => {
+  console.log(`Server running on port ${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+});

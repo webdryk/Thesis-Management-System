@@ -303,276 +303,172 @@
 // module.exports = router;
 
 
-
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const mammoth = require("mammoth");
 const PDFDocument = require("pdfkit");
-const Staff = require("../db/staffdb");
-const Student = require("../db/studentdb");
+const { Student, Staff } = require("../db/models");
+const { isAuthenticated, isStudent } = require("../middleware/auth");
 const { saveChatMessage } = require("../middleware/chat");
-const { isAuthenticated } = require("../middleware/auth");
 
-// Configure multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const { studentID, uploaderType } = req.body;
-    const uploadTypes = {
-      supervisor: `uploads/${studentID}/supervisor/`,
-      student: `uploads/${studentID}/student/`,
-      student_final: `uploads/${studentID}/final/`
-    };
-    
-    const destinationFolder = uploadTypes[uploaderType] || "uploads/";
-    fs.mkdirSync(destinationFolder, { recursive: true });
-    cb(null, destinationFolder);
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  }
+// Configure file uploads
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      const { studentID, uploaderType } = req.body;
+      const uploadDirs = {
+        supervisor: `uploads/${studentID}/supervisor/`,
+        student: `uploads/${studentID}/student/`,
+        student_final: `uploads/${studentID}/final/`
+      };
+      
+      const dir = uploadDirs[uploaderType] || "uploads/";
+      fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    }
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
-const upload = multer({ storage });
-
-// Student Dashboard
-router.get("/student", isAuthenticated, (req, res) => {
-  res.render("studentdashboard", {
+// Student dashboard
+router.get("/", isStudent, (req, res) => {
+  res.render("student/dashboard", {
     user: req.user,
-    socketIOClientScript: "/socket.io/socket.io.js"
+    messages: req.flash()
   });
 });
 
-// Student Project Management
-router.get("/student/myproject/:params", isAuthenticated, async (req, res) => {
-  const messages = req.flash("info");
-  const { user } = req;
-
-  if (!user.topic) {
-    return res.render("myProject", {
-      user,
-      showModal: true,
-      showModal1: false,
-      messages
-    });
-  }
-
-  const showModal1 = user.thesisStatus === "Approve For Defense" && !user.final_document?.[0];
-  res.render("myProject", {
-    user,
-    showModal: false,
-    showModal1,
-    messages
-  });
-});
-
-router.post("/student/myprojectTopic", isAuthenticated, async (req, res) => {
-  const { topic, description } = req.body;
-  
-  if (!topic || !description) {
-    req.flash("info", "Topic and description are required");
-    return res.redirect(`/student/myproject/${req.user.ID}`);
-  }
-
-  await Student.findOneAndUpdate(
-    { ID: req.user.ID },
-    { 
-      topic, 
-      description, 
-      thesisStatus: "Pending Approval" 
-    }
-  );
-
-  req.flash("info", "Thesis Topic Submitted Successfully");
-  res.redirect(`/student/myproject/${req.user.ID}`);
-});
-
-// File Upload Handling
-router.post("/student/upload", upload.single("document"), async (req, res) => {
+// Project management
+router.get("/project/:id", isStudent, async (req, res) => {
   try {
-    const { studentID } = req.body;
-    const uploadedDocument = req.file;
-
-    if (!uploadedDocument) {
-      req.flash("info", "No file uploaded");
-      return res.redirect(`/student/myproject/${studentID}`);
-    }
-
-    const student = await Student.findOne({ ID: studentID });
+    const student = await Student.findById(req.params.id);
     if (!student) {
-      req.flash("info", "Student not found");
-      return res.redirect(`/student/myproject/${studentID}`);
+      req.flash("error", "Student not found");
+      return res.redirect("/student");
     }
 
-    student.uploads.push({
-      sender: "student",
-      filename: uploadedDocument.filename,
-      timestamp: new Date()
+    res.render("student/project", {
+      user: student,
+      showTopicModal: !student.topic,
+      showFinalModal: student.thesisStatus === "Approve For Defense" && !student.final_document?.length,
+      messages: req.flash()
+    });
+  } catch (error) {
+    console.error("Project error:", error);
+    req.flash("error", "Error loading project");
+    res.redirect("/student");
+  }
+});
+
+// Submit project topic
+router.post("/project/topic", isStudent, async (req, res) => {
+  try {
+    const { topic, description } = req.body;
+    if (!topic || !description) {
+      req.flash("error", "Topic and description are required");
+      return res.redirect(`/student/project/${req.user.id}`);
+    }
+
+    await Student.findByIdAndUpdate(req.user.id, {
+      topic,
+      description,
+      thesisStatus: "Pending Approval"
     });
 
-    await student.save();
-    req.flash("info", "File uploaded successfully!");
-    res.redirect(`/student/myproject/${studentID}`);
+    req.flash("success", "Topic submitted successfully");
+    res.redirect(`/student/project/${req.user.id}`);
+  } catch (error) {
+    console.error("Topic submission error:", error);
+    req.flash("error", "Error submitting topic");
+    res.redirect(`/student/project/${req.user.id}`);
+  }
+});
+
+// File upload handler
+router.post("/upload", isStudent, upload.single("document"), async (req, res) => {
+  try {
+    const { studentID, uploaderType } = req.body;
+    const file = req.file;
+
+    if (!file) {
+      req.flash("error", "No file uploaded");
+      return res.redirect(`/student/project/${studentID}`);
+    }
+
+    const update = {
+      $push: {
+        uploads: {
+          sender: uploaderType,
+          filename: file.filename,
+          originalName: file.originalname,
+          path: file.path,
+          size: file.size,
+          timestamp: new Date()
+        }
+      }
+    };
+
+    await Student.findByIdAndUpdate(studentID, update);
+    req.flash("success", "File uploaded successfully");
+    res.redirect(`/student/project/${studentID}`);
   } catch (error) {
     console.error("Upload error:", error);
-    req.flash("info", "Error uploading file");
-    res.redirect(`/student/myproject/${req.body.studentID}`);
+    req.flash("error", "Error uploading file");
+    res.redirect(`/student/project/${req.body.studentID}`);
   }
 });
 
-// Messaging System
-router.get("/student/message", isAuthenticated, async (req, res) => {
-  const supervisor = await Staff.findOne({ ID: req.user.supervisorID });
-  if (!supervisor) {
-    req.flash("info", "Supervisor not found");
-    return res.redirect("/student");
-  }
-
-  const room = `supervisor_${supervisor.ID}_student_${req.user.ID}`;
-  const student = await Student.findOne({ ID: req.user.ID });
-
-  res.render("studentMessage", {
-    user: req.user,
-    supervisor,
-    room,
-    socketIOClientScript: "/socket.io/socket.io.js",
-    studentId: req.user.ID,
-    chats: student?.chats || []
-  });
-});
-
-router.post("/student/message", isAuthenticated, async (req, res) => {
+// Messaging system
+router.get("/messages", isStudent, async (req, res) => {
   try {
-    const { message } = req.body;
-    const { supervisorID, ID: studentId } = req.user;
-    const room = `supervisor_${supervisorID}_student_${studentId}`;
-
-    req.io.to(room).emit("chat message", { sender: "student", message });
-    await saveChatMessage("student", message, studentId);
-
-    res.redirect("/student/message");
-  } catch (error) {
-    console.error("Message error:", error);
-    req.flash("info", "Error sending message");
-    res.redirect("/student/message");
-  }
-});
-
-// File Download
-router.get("/student/:studentID/student/:fileName", (req, res) => {
-  const { studentID, fileName } = req.params;
-  const filePath = path.join(__dirname, "..", "uploads", studentID, "supervisor", fileName);
-
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.status(404).send("File not found");
-  }
-});
-
-// Plagiarism Check
-router.get("/plagiarism", isAuthenticated, (req, res) => {
-  res.render("plagiarism", {
-    user: req.user,
-    messages: req.flash("info"),
-    originalname: "",
-    score: "",
-    pdfFilePath: ""
-  });
-});
-
-router.post("/plagiarism", upload.single("document"), async (req, res) => {
-  try {
-    if (!req.file) {
-      req.flash("info", "No file uploaded");
-      return res.redirect("/plagiarism");
+    const supervisor = await Staff.findById(req.user.supervisor);
+    if (!supervisor) {
+      req.flash("error", "Supervisor not found");
+      return res.redirect("/student");
     }
 
-    const { originalname, path: filePath } = req.file;
-    const outputFileName = originalname.replace(".docx", ".pdf");
-    const outputPath = `./uploads/${outputFileName}`;
+    const room = `supervisor_${supervisor.id}_student_${req.user.id}`;
+    const student = await Student.findById(req.user.id).populate("chats");
 
-    const result = await mammoth.extractRawText({ path: filePath });
-    const text = result.value.trim();
-    const score = "10%"; // Replace with actual plagiarism check logic
-
-    const doc = new PDFDocument();
-    doc.pipe(fs.createWriteStream(outputPath));
-    doc.fontSize(12).text(text).text(`Score is ${score}`);
-    doc.end();
-
-    res.set({
-      "Content-Disposition": `attachment; filename="${outputFileName}"`,
-      "Content-Type": "application/pdf"
-    });
-
-    fs.createReadStream(outputPath)
-      .pipe(res)
-      .on("finish", () => {
-        [filePath, outputPath].forEach(path => {
-          if (fs.existsSync(path)) fs.unlinkSync(path);
-        });
-      });
-  } catch (error) {
-    console.error("Plagiarism check error:", error);
-    req.flash("info", "Error processing document");
-    res.redirect("/plagiarism");
-  }
-});
-
-// Thesis Final Document Submission
-router.post(
-  "/thesis/finalDocument",
-  isAuthenticated,
-  upload.single("document"),
-  async (req, res) => {
-    try {
-      const { topic, abstract } = req.body;
-      const { ID: studentID } = req.user;
-      const uploadedDocument = req.file;
-
-      if (!uploadedDocument || !topic || !abstract) {
-        req.flash("info", "All fields and document are required");
-        return res.redirect(`/student/myproject/${studentID}`);
-      }
-
-      const student = await Student.findOne({ ID: studentID });
-      if (!student) {
-        req.flash("info", "Student not found");
-        return res.redirect(`/student/myproject/${studentID}`);
-      }
-
-      student.final_document.push({
-        sender: "student",
-        topic,
-        abstract,
-        filename: uploadedDocument.filename,
-        timestamp: new Date()
-      });
-
-      await student.save();
-      req.flash("info", "Final document submitted successfully");
-      res.redirect(`/student/myproject/${studentID}`);
-    } catch (error) {
-      console.error("Final document error:", error);
-      req.flash("info", "Error submitting final document");
-      res.redirect(`/student/myproject/${req.user.ID}`);
-    }
-  }
-);
-
-// Published Thesis View
-router.get("/student/thesis", isAuthenticated, async (req, res) => {
-  try {
-    const publishedTheses = await Student.find({ thesisStatus: "Published" });
-    res.render("studentThesis", {
+    res.render("student/messages", {
       user: req.user,
-      findallstudentswithpublish: publishedTheses
+      supervisor,
+      room,
+      chats: student.chats,
+      messages: req.flash()
     });
   } catch (error) {
-    console.error("Thesis view error:", error);
-    req.flash("info", "Error loading published theses");
+    console.error("Messages error:", error);
+    req.flash("error", "Error loading messages");
+    res.redirect("/student");
+  }
+});
+
+// Download file
+router.get("/download/:type/:filename", isStudent, (req, res) => {
+  try {
+    const filePath = path.join(
+      __dirname,
+      "..",
+      "uploads",
+      req.user.id,
+      req.params.type,
+      req.params.filename
+    );
+
+    if (fs.existsSync(filePath)) {
+      return res.download(filePath);
+    }
+    throw new Error("File not found");
+  } catch (error) {
+    console.error("Download error:", error);
+    req.flash("error", error.message);
     res.redirect("/student");
   }
 });
