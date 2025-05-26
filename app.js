@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
+const MongoStore = require("connect-mongo");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
@@ -18,11 +19,23 @@ const server = http.createServer(app);
 const io = socketIO(server);
 require("dotenv").config();
 // creating session
+// app.use(session({
+//   secret: process.env.SESSION_SECRET ,
+//   resave: false,
+//   saveUninitialized: false,
+ 
+// }));
+
 app.use(session({
-  secret: process.env.SESSION_SECRET ,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
- 
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGO_URI // Use your MongoDB connection string
+  }),
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  }
 }));
 
 // using flash for alerts
