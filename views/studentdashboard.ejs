@@ -1,58 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Dashboard</title>
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
 </head>
-<body class="bg-gray-100">
-
-<!-- Sidebar -->
-<aside class="fixed top-0 left-0 z-40 w-64 h-screen bg-white shadow-lg hidden lg:block">
-  <div class="pt-16 px-4 space-y-2">
-    <a href="/student" class="block py-2 px-4 rounded hover:bg-gray-200">Main Dashboard</a>
-    <a href="/student" class="block py-2 px-4 rounded bg-gray-100 shadow">
-      <i class="fa fa-gauge me-2"></i> Dashboard
-    </a>
-    <a href="/student/thesis" class="block py-2 px-4 rounded hover:bg-gray-200">
-      <i class="fa fa-book me-2"></i> Thesis
-    </a>
-    <a href="/student/myproject/<%- user.ID %>" class="block py-2 px-4 rounded hover:bg-gray-200">
-      <i class="fa fa-book-open-reader me-2"></i> My Project
-    </a>
-    <a href="/student/message" class="block py-2 px-4 rounded hover:bg-gray-200">
-      <i class="fa fa-rocketchat me-2"></i> Messages
-    </a>
-    <a href="/plagiarism" class="block py-2 px-4 rounded hover:bg-gray-200">
-      <i class="fa fa-spell-check me-2"></i> Plagiarism
-    </a>
-    <a href="/logout" class="block py-2 px-4 rounded hover:bg-gray-200">
-      <i class="fa fa-right-from-bracket me-2"></i> LogOut
-    </a>
-  </div>
-</aside>
-
-<!-- Navbar -->
-<nav class="fixed top-0 left-0 w-full bg-white shadow flex items-center justify-between px-4 py-3 z-50 lg:pl-64">
-  <button class="lg:hidden text-xl" onclick="document.querySelector('aside').classList.toggle('hidden')">
-    <i class="fas fa-bars"></i>
-  </button>
-  <div class="text-right">
-    <span class="mr-2">Welcome,</span>
-    <div class="inline-block relative">
-      <button class="dropdown-toggle"><%- user.fName %> <i class="fa fa-chevron-down"></i></button>
-      <ul class="absolute right-0 mt-2 w-40 bg-gray-800 text-white rounded shadow hidden dropdown-menu">
-        <li><a href="#" class="block px-4 py-2 hover:bg-gray-700">Profile</a></li>
-        <li><a href="#" class="block px-4 py-2 hover:bg-gray-700">Settings</a></li>
-      </ul>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:translate-x-0 -translate-x-full" id="sidebar">
+        <div class="flex flex-col h-full py-4 px-3">
+            <div class="space-y-2">
+                <a href="/student" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <span>Main dashboard</span>
+                </a>
+                <a href="/student" class="flex items-center p-2 text-white bg-blue-600 rounded-lg">
+                    <i class="fas fa-gauge mr-3"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/student/thesis" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-book mr-3"></i>
+                    <span>Thesis</span>
+                </a>
+                <a href="/student/myproject/<%- user.ID %>" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-book-open-reader mr-3"></i>
+                    <span>My Project</span>
+                </a>
+                <a href="/student/message" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-comment mr-3"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="/plagiarism" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-spell-check mr-3"></i>
+                    <span>Plagiarism</span>
+                </a>
+                <a href="/logout" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-right-from-bracket mr-3"></i>
+                    <span>LogOut</span>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
-</nav>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-white shadow-sm">
+        <div class="flex items-center justify-between p-4">
+            <button class="lg:hidden text-gray-600" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <span>Welcome, </span>
+                    <button class="dropdown-toggle text-blue-600">
+                        <%- user.fName%>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden dropdown-menu">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profile</a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Settings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
 
 <!-- Main content -->
 <main class="pt-20 lg:ml-64 px-4">

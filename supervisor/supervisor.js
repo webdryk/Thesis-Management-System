@@ -1,7 +1,7 @@
 const express= require('express')
 const router= express.Router()
-const Staff = require('../db/models/Staff')
-const Student = require('../db/models/Student')                   
+const Staff = require('../db/staffdb')
+const Student = require('../db/studentdb')                   
 const { saveChatMessage } = require('../middleware/chat'); // Update the path to chat.js
 const { isAuthenticated, isAuthorized } = require('../middleware/auth');
 const multer = require('multer');

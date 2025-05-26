@@ -1,8 +1,8 @@
 const mongoose=require('mongoose')
 const bcrypt= require('bcrypt')
 const router= require('express').Router()
-const staff= require('../db/models/Staff')
-const student= require('../db/models/Student')
+const staff= require('../db/staffdb')
+const student= require('../db/studentdb')
 const flash = require('connect-flash');
 
 router.use(flash());
@@ -53,7 +53,7 @@ router.post('/studentregister',async(req,res)=>{
 
     await bcrypt.hash(cPassword,10,(err,password)=>{
       if(password){
-        student.create({fName,lName,ID,email,department,faculty,role,password})
+        student.create({fName,lName,ID,email,department,faculty,role,password, supervisor:'Not Assigned'})
         req.flash('info', 'User created');
         res.redirect('/login');
       }

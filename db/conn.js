@@ -3,10 +3,7 @@ require('dotenv').config();
 
 const url = process.env.MONGO_URI;
 
-mongoose.connect(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(url)
 .then(() => {
   console.log('✅ Database connected successfully');
 })

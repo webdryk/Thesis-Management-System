@@ -1,0 +1,29 @@
+conky.config = {
+    own_window_class = 'ConkyWeekday',
+    alignment = 'top_middle',
+    background = true,
+    double_buffer = true,
+    update_interval = 1,
+    own_window = true,
+    own_window_type = 'desktop',
+    own_window_transparent = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 150,  -- Set the opacity (0 = transparent, 255 = opaque)
+    use_xft = true,
+    xftalpha = 0.8,
+    override_utf8_locale = true,
+    draw_shades = true, -- Enables soft glow effect
+    draw_outline = false,
+    draw_borders = false,
+    draw_graph_borders = false,
+    default_color = '#8cffbf', -- Light gray for main text
+    default_shade_color = '#fff7fa', -- Dark gray for soft glow
+    font = 'Anurati:bold:size=100',
+    gap_x = 0,
+    gap_y = 100 
+};
+
+conky.text = [[
+${alignc}${color}${uppercase ${time %A}}${color}
+]];
+

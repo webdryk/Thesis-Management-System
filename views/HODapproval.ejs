@@ -3,414 +3,624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- Font Awesome -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-rel="stylesheet"
-/>
-<!-- Google Fonts -->
-<link
-href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-rel="stylesheet"
-/>
-<!-- MDB -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
-rel="stylesheet"
-/>
-
-<style>
-    body {
-  background-color: #fbfbfb;
-}
-@media (min-width: 991.98px) {
-  main {
-    padding-left: 240px;
-  }
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding: 58px 0 0; /* Height of navbar */
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-  width: 240px;
-  z-index: 600;
-}
-
-@media (max-width: 991.98px) {
-  .sidebar {
-    width: 100%;
-  }
-}
-.sidebar .active {
-  border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-}
-
-.sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-</style>
-    <title>Document</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>HOD Dashboard</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        warning: '#f59e0b',
+                        info: '#06b6d4',
+                        dark: '#1f2937'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-  <body>
-    
-   
-     
-    <!--Main Navigation-->
-<header>
-  <!-- Sidebar -->
-  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-    <div class="position-sticky">
-        <div class="list-group list-group-flush mx-3 mt-4">
-            <a
-              href="/HOD"
-              class="list-group-item list-group-item-action py-2 ripple"
-              aria-current="true"
-            >
-              <span>Main dashboard</span>
-            </a>
-            <a href="/HOD" class="list-group-item list-group-item-action py-2 ripple ">
-              <i class=" fa fa-light fa-gauge me-3"></i><span>Dashboard</span>
-            </a>
-            <a href="/HOD/thesis" class="list-group-item list-group-item-action py-2 ripple"
-              ><i class="fa fa-book fa-fw me-3"></i><span>Thesis</span></a
-            >
-            <a href="/HOD/students" class="list-group-item list-group-item-action py-2 ripple"
-            ><i class="fa fa-duotone fa-users me-3"></i><span>Students</span></a
-          >
-            
-            <a href="/HOD/HODapproval" class="list-group-item list-group-item-action py-2 ripple active"
-            ><i class="fas fa-lock fa-fw me-3"></i><span>Approval</span></a
-          >
-            <a href="/HOD/Report" class="list-group-item list-group-item-action py-2 ripple"
-              ><i class="fa fa-duotone fa-marker me-3"></i><span>Report</span></a
-            >
-            
-            <a href="/logout" class="list-group-item list-group-item-action py-2 ripple">
-              <i class=" fa fa-light fa-right-from-bracket me-3"></i><span>LogOut</span>
-            </a>
-           
-          </div>
-    </div>
-  </nav>
-  <!-- Sidebar -->
-
-  <!-- Navbar -->
-  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#sidebarMenu"
-        aria-controls="sidebarMenu"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <!-- Brand -->
-      <a class="navbar-brand" href="#">
-        <!-- <img
-          src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-          height="25"
-          alt="MDB Logo"
-          loading="lazy"
-        /> -->
-      </a>
-     
-       <!-- Right links -->
-       <ul class="navbar-nav ms-auto d-flex flex-row">
-       
-       
-        <li class="nav-item dropdown  me-5">
-          welcome, 
-          <a class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <%- user.fName%>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            
-          
-          </ul>
-        </li>
-        
-       
-        
-        
-
-
-      </ul>
-    </div>
-    <!-- Container wrapper -->
-      
-  </nav>
-  <!-- Navbar -->
-</header>
-<!--Main Navigation-->
-
-            <!--Main layout-->
-<main style="margin-top: 58px;">
-  <div class="container pt-4  ms-5 me-5 text-center" >
-                
-              <nav class="m-5">
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a href="#nav-home" class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Student</a>
-                  <a href="#nav-profile" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Supervisor</a>
-                  <a href="#nav-contact" class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Panelist</a>
-                  <a href="#nav-disabled" class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false">Assign Student</a>
-                </div>
-              </nav>
-              <div class="tab-content mx-5" id="nav-tabContent">
-                
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-                    <table class="table table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Thesis Topic</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Approval</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                          <% listOfStudent.forEach(student => { %>
-                            <tr>
-                              <th scope="row"><%- student.fName%>  <%- student.lName %></th>
-                              <td><%- student.topic %> <span><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">read More</a></span></td>
-                              <td id="status"><%- student.thesisStatus %></td>
-                              <td>
-                                
-                                <form action="/HOD/HODapproval/approve" method="post" style="display: inline; margin-right: 5px;">
-                                  <input type="hidden" name="studentID" value="<%- student.ID %>">
-                                <button type="submit" id="approve" class="btn btn-outline-success" >Approve</button>
-                              </form>
-                              <form action="/HOD/HODapproval/reject" method="post" style="display: inline;">
-                                <input type="hidden" name="studentID" value="<%- student.ID %>">
-                                <button type="submit" id="reject" class="btn btn-outline-danger">Reject</button>
-                              </form>
-                            </td>
-                              
-                            <script>
-                            let status=  document.getElementById('status').innerText
-                            if(status==='Approved'){
-                              document.getElementById('approve').disabled = true;
-                            }
-                            if(status==='Rejected'){
-                              document.getElementById('reject').disabled = true;
-                            }
-                            
-                            </script>
-                            </tr>
-                          <!-- description modal -->
-                             <!-- Modal -->
-                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h1 class="modal-title fs-5" id="exampleModalLabel"><%- student.topic %></h1>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                  <%- student.description %>
-                                </div>
-                                <div class="modal-footer">
-                                  <form action="/HOD/HODapproval/approve" method="post" style="display: inline; margin-right: 5px;">
-                                    <input type="hidden" name="studentID" value="<%- student.ID %>">
-                                  <button type="submit" id="approve" class="btn btn-outline-success" >Approve</button>
-                                </form>
-                                <form action="/HOD/HODapproval/reject" method="post" style="display: inline;">
-                                  <input type="hidden" name="studentID" value="<%- student.ID %>">
-                                  <button type="submit" id="reject" class="btn btn-outline-danger">Reject</button>
-                                </form>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <% }) %>
-
-                      </table>
-                </div>
-                <!-- supervisor Approval -->
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                  <table class="table table-hover">
-                    <thead>
-                        <th scope="col">Name</th>
-                        <th scope="col">Department</th>
-                        <th scope="col">Role</th>
-                    </thead>
-                    <tbody>
-
-                      <% listOfSupervisor.forEach(supervisor => { %>
-                        <tr>
-                          <th scope="row"><%- supervisor.fName%>  <%- supervisor.lName %></th>
-                          <td><%- supervisor.department %> </td>
-                          <td id="status"><%- supervisor.role %></td>
-                          </tr>
-                          <% })%>
-                </table>
-
-                </div>
-                <!-- panelist Approval -->
-                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
-                  <table class="table table-hover">
-                    <thead>
-                    
-                        <th scope="col">Name</th>
-                        <th scope="col">Department</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Status</th>
-                        
-                   
-                    </thead>
-                    <tbody>
-
-                      <% listOfPanelist.forEach(panelist => { %>
-                        <tr>
-                          <th scope="row"><%- panelist.fName%>  <%- panelist.lName %></th>
-                          <td><%- panelist.department %> </td>
-                          <td ><%- panelist.role %></td>
-                          <td>  <form action="/HOD/HODapproval/activate" method="post" style="display: inline; margin-right: 5px;">
-                            <input type="hidden" name="staffID" value="<%- panelist.ID %>">
-                          <button type="submit" id="activate" class="btn btn-outline-success" >Activate</button>
-                        </form>
-                        <form action="/HOD/HODapproval/deactivate" method="post" style="display: inline;">
-                          <input type="hidden" name="staffID" value="<%- panelist.ID %>">
-                          <button type="submit" id="deactivate" class="btn btn-outline-danger">Deactivate</button>
-                        </form></td>
-                          </tr>
-
-                          <% if (panelist.panelist=='activated') { %>
-                            <script>
-                            document.getElementById('activate').disabled = true;
-                            </script>
-                           
-                          <% }else if(panelist.panelist=='deactivated'){%>
-                            <script>
-                              document.getElementById('deactivate').disabled = true;
-                              </script>
-
-                            <%    } %>
-                          <% })%>
-
-                          
-                          
-                </table>
-
-                </div>
-                <!-- Assign Student to Supervisor -->
-                <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">
-
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Thesis Topic</th>
-                        <th scope="col">Supervisor</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <% listOfStudentToAssign.forEach(studentapproved => { %>
-                        <tr>
-                          <th scope="row"><%- studentapproved.fName%>  <%- studentapproved.lName %></th>
-                          <td><%- studentapproved.topic %> <span><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal1">read More</a></span></td>
-                       
-                          <td>
-                            <div class="supervisor">
-                            <form action="/HOD/HODapproval/assign" method="post" style="display: inline; margin-right: 5px;" >
-                            <select class="form-select" id="supervisorName" aria-label="Default select example" name="supervisorAssigned" placeholder="select supervisor">
-                            
-                            <% listOfSupervisor.forEach(supervisor => { %>
-                              <option value="<%- supervisor.ID %>"><%- supervisor.fName %> <%- supervisor.lName %></option>
-                            <% }) %>
-                    
-                          </select>
-                           
-                        </div>
-                        </td>
-                          <td>
-                            
-                            
-                              <input type="hidden" name="studentID" value="<%- studentapproved.ID %>">
-                            <button type="submit" id="assign" class="btn btn-outline-success" >Assign</button>
-                          </form>
-
-                            <% if (studentapproved.supervisor) { %>
-
-                              <script>
-                                document.getElementById('assign').disabled = true;
-                                document.getElementById('supervisorName').disabled = true;
-                                document.getElementById('supervisorName').innerHTML=`<option value="<%- studentapproved.supervisor %>" selected><%- studentapproved.supervisor %> </option>`
-                                
-                                </script>
-                            <% } %> 
-                            
-                      
-                          
-                        </td>
-                          
-                        
-                        
-                        
-                        </tr>
-                      <!-- description modal -->
-                         <!-- Modal -->
-                      <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="exampleModalLabel"><%- studentapproved.topic %></h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <%- studentapproved.description %>
-                            </div>
-                            <div class="modal-footer">
-                              close
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <% }) %>
-
-                     
-                      
-                     
-                      
-                      
-                     
-                  </table>
-
-                </div>
-              </div>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-200 ease-in-out lg:translate-x-0 -translate-x-full" id="sidebar">
+        <div class="flex flex-col h-full py-4 px-3">
+            <div class="flex items-center justify-between px-4 py-2 mb-4">
+                <h2 class="text-xl font-bold text-gray-800">HOD Portal</h2>
+                <button class="lg:hidden text-gray-600" onclick="toggleSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-                  
-            </div>
+            <div class="space-y-1">
+                <a href="/HOD" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-home mr-3 text-gray-500"></i>
+                    <span>Main Dashboard</span>
+                </a>
+                <a href="/HOD/thesis" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-book mr-3 text-gray-500"></i>
+                    <span>Thesis Management</span>
+                </a>
+                <a href="/HOD/students" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-users mr-3 text-gray-500"></i>
+                    <span>Students</span>
+                </a>
+                <a href="/HOD/HODapproval" class="flex items-center p-3 text-white bg-blue-600 rounded-lg">
+                    <i class="fas fa-check-circle mr-3"></i>
+                    <span>Approvals</span>
+                </a>
+                <a href="/HOD/Report" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-chart-bar mr-3 text-gray-500"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="/logout" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors mt-4">
+                    <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i>
+                    <span>Log Out</span>
+                </a>
             </div>
         </div>
-      </div>
+    </div>
 
-      <script
-  type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-white shadow-sm">
+        <div class="flex items-center justify-between p-4">
+            <button class="lg:hidden text-gray-600" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button class="dropdown-toggle flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-user text-blue-600"></i>
+                        </div>
+                        <span class="font-medium"><%- user.fName%></span>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden dropdown-menu border border-gray-100">
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-user-circle mr-2"></i> Profile
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-cog mr-2"></i> Settings
+                        </a>
+                        <div class="border-t border-gray-100"></div>
+                        <a href="/logout" class="block px-4 py-2 text-gray-800 hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  </body>
+    <!-- Main Content -->
+    <main class="lg:ml-64 pt-16">
+        <div class="p-6">
+           
+
+            <!-- Tabs Navigation -->
+            <div class="border-b border-gray-200 mb-6">
+                <nav class="flex space-x-8">
+                    <button class="tab-button py-4 px-1 border-b-2 font-medium text-sm active border-blue-500 text-blue-600" data-tab="student">
+                        <i class="fas fa-user-graduate mr-2"></i> Student Approvals
+                    </button>
+                    <button class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="supervisor">
+                        <i class="fas fa-chalkboard-teacher mr-2"></i> Supervisors
+                    </button>
+                    <button class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="panelist">
+                        <i class="fas fa-user-tie mr-2"></i> Panelists
+                    </button>
+                    <button class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="assign">
+                        <i class="fas fa-link mr-2"></i> Assign Students
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-contents">
+                <!-- Student Tab -->
+                <div class="tab-content active" id="student-tab">
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="text-lg font-medium text-gray-900">Pending Student Approvals</h3>
+                            <div class="relative">
+                                <input type="text" placeholder="Search students..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thesis Topic</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <% if (listOfStudent.length === 0) { %>
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                            No pending student approvals
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                    <% listOfStudent.forEach(student => { %>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                                    <i class="fas fa-user text-blue-600"></i>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900"><%- student.fName%> <%- student.lName %></div>
+                                                    <div class="text-sm text-gray-500"><%- student.ID %></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="text-sm text-gray-900 font-medium"><%- student.topic %></div>
+                                            <button class="text-blue-600 text-xs hover:underline mt-1 flex items-center" onclick="openModal('student-modal-<%- student.ID %>')">
+                                                <i class="fas fa-eye mr-1"></i> View details
+                                            </button>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                <% if (student.thesisStatus === 'Approved') { %> bg-green-100 text-green-800 <% } 
+                                                else if (student.thesisStatus === 'Rejected') { %> bg-red-100 text-red-800 <% } 
+                                                else { %> bg-yellow-100 text-yellow-800 <% } %>">
+                                                <%- student.thesisStatus %>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <div class="flex space-x-2">
+                                                <form action="/HOD/HODapproval/approve" method="post">
+                                                    <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                                    <button type="submit" class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors flex items-center
+                                                        <% if (student.thesisStatus === 'Approved') { %> opacity-50 cursor-not-allowed <% } %>"
+                                                        <% if (student.thesisStatus === 'Approved') { %> disabled <% } %>>
+                                                        <i class="fas fa-check mr-1"></i> Approve
+                                                    </button>
+                                                </form>
+                                                <form action="/HOD/HODapproval/reject" method="post">
+                                                    <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                                    <button type="submit" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors flex items-center
+                                                        <% if (student.thesisStatus === 'Rejected') { %> opacity-50 cursor-not-allowed <% } %>"
+                                                        <% if (student.thesisStatus === 'Rejected') { %> disabled <% } %>>
+                                                        <i class="fas fa-times mr-1"></i> Reject
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Student Modal -->
+                                    <div class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4" id="student-modal-<%- student.ID %>">
+                                        <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                                            <div class="p-4 border-b flex justify-between items-center">
+                                                <h2 class="text-xl font-semibold text-gray-800"><%- student.topic %></h2>
+                                                <button class="text-gray-500 hover:text-gray-700" onclick="closeModal('student-modal-<%- student.ID %>')">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <div class="p-6">
+                                                <div class="mb-6">
+                                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Student Information</h3>
+                                                    <div class="flex items-center space-x-4">
+                                                        <div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                                                            <i class="fas fa-user text-blue-600 text-xl"></i>
+                                                        </div>
+                                                        <div>
+                                                            <p class="text-lg font-medium text-gray-900"><%- student.fName %> <%- student.lName %></p>
+                                                            <p class="text-sm text-gray-500">ID: <%- student.ID %></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mb-6">
+                                                    <h3 class="text-sm font-medium text-gray-500 mb-2">Thesis Description</h3>
+                                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                                        <p class="text-gray-700 whitespace-pre-line"><%- student.description %></p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="flex justify-end space-x-3 pt-4 border-t">
+                                                    <form action="/HOD/HODapproval/approve" method="post" class="inline">
+                                                        <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors flex items-center
+                                                            <% if (student.thesisStatus === 'Approved') { %> opacity-50 cursor-not-allowed <% } %>"
+                                                            <% if (student.thesisStatus === 'Approved') { %> disabled <% } %>>
+                                                            <i class="fas fa-check mr-2"></i> Approve Thesis
+                                                        </button>
+                                                    </form>
+                                                    <form action="/HOD/HODapproval/reject" method="post" class="inline">
+                                                        <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors flex items-center
+                                                            <% if (student.thesisStatus === 'Rejected') { %> opacity-50 cursor-not-allowed <% } %>"
+                                                            <% if (student.thesisStatus === 'Rejected') { %> disabled <% } %>>
+                                                            <i class="fas fa-times mr-2"></i> Reject Thesis
+                                                        </button>
+                                                    </form>
+                                                    <button onclick="closeModal('student-modal-<%- student.ID %>')" class="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                            <div class="text-sm text-gray-500">
+                                Showing <span class="font-medium">1</span> to <span class="font-medium"><%= listOfStudent.length %></span> of <span class="font-medium"><%= listOfStudent.length %></span> results
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 rounded text-gray-500 bg-white disabled">
+                                    Previous
+                                </button>
+                                <button class="px-3 py-1 border border-gray-300 rounded text-gray-700 bg-white hover:bg-gray-50">
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supervisor Tab -->
+                <div class="tab-content hidden" id="supervisor-tab">
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 class="text-lg font-medium text-gray-900">Department Supervisors</h3>
+                            <div class="relative">
+                                <input type="text" placeholder="Search supervisors..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supervisor</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned Students</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <% listOfSupervisor.forEach(supervisor => { %>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                                    <i class="fas fa-chalkboard-teacher text-indigo-600"></i>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900"><%- supervisor.fName%> <%- supervisor.lName %></div>
+                                                    <div class="text-sm text-gray-500"><%- supervisor.email %></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900"><%- supervisor.department %></div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                <%- supervisor.role %>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                             <%- listOfStudentApproved.filter(s => s.supervisorID === supervisor.ID).length || 0 %> students
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panelist Tab -->
+                <div class="tab-content hidden" id="panelist-tab">
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900">Panel Members Management</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Panelist</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <% listOfPanelist.forEach(panelist => { %>
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                                    <i class="fas fa-user-tie text-purple-600"></i>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900"><%- panelist.fName%> <%- panelist.lName %></div>
+                                                    <div class="text-sm text-gray-500"><%- panelist.email %></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900"><%- panelist.department %></div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900"><%- panelist.role %></div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                <% if (panelist.panelist === 'activated') { %> bg-green-100 text-green-800 <% } 
+                                                else { %> bg-gray-100 text-gray-800 <% } %>">
+                                                <% if (panelist.panelist === 'activated') { %> Active <% } else { %> Inactive <% } %>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <div class="flex space-x-2">
+                                                <form action="/HOD/HODapproval/activate" method="post">
+                                                    <input type="hidden" name="staffID" value="<%- panelist.ID %>">
+                                                    <button type="submit" class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors flex items-center
+                                                        <% if (panelist.panelist === 'activated') { %> opacity-50 cursor-not-allowed <% } %>"
+                                                        <% if (panelist.panelist === 'activated') { %> disabled <% } %>>
+                                                        <i class="fas fa-power-off mr-1"></i> Activate
+                                                    </button>
+                                                </form>
+                                                <form action="/HOD/HODapproval/deactivate" method="post">
+                                                    <input type="hidden" name="staffID" value="<%- panelist.ID %>">
+                                                    <button type="submit" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors flex items-center
+                                                        <% if (panelist.panelist !== 'activated') { %> opacity-50 cursor-not-allowed <% } %>"
+                                                        <% if (panelist.panelist !== 'activated') { %> disabled <% } %>>
+                                                        <i class="fas fa-ban mr-1"></i> Deactivate
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assign Student Tab -->
+                <div class="tab-content hidden" id="assign-tab">
+                    <div class="grid grid-cols-1 gap-6">
+    <!-- Assigned Students Section -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Currently Assigned Students</h3>
+            <p class="text-sm text-gray-500 mt-1">Manage existing supervisor assignments</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thesis Topic</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supervisor</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <% const assignedStudents = listOfStudentApproved.filter(s => s.supervisor && s.supervisor !== 'Not Assigned'); %>
+                    <% if (assignedStudents.length === 0) { %>
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                            No students currently assigned to supervisors
+                        </td>
+                    </tr>
+                    <% } %>
+                    <% assignedStudents.forEach(student => { %>
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900"><%- student.fName %> <%- student.lName %></div>
+                                    <div class="text-sm text-gray-500"><%- student.ID %></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900 font-medium"><%- student.topic %></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <i class="fas fa-chalkboard-teacher text-indigo-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900"><%- student.supervisor %></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form action="/HOD/HODapproval/revoke" method="post" class="inline">
+                                <input type="hidden" name="studentID" value="<%- student.ID %>">
+                                <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center">
+                                    <i class="fas fa-unlink mr-2"></i> Revoke
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Assign Students Section -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Assign Students to Supervisors</h3>
+            <p class="text-sm text-gray-500 mt-1">Assign unassigned students to available supervisors</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thesis Topic</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supervisor</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <% const unassignedStudents = listOfStudentToAssign.filter(s => !s.supervisor || s.supervisor === 'Not Assigned'); %>
+                    <% if (unassignedStudents.length === 0) { %>
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                            All students have been assigned supervisors
+                        </td>
+                    </tr>
+                    <% } %>
+                    <% unassignedStudents.forEach(studentapproved => { %>
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-blue-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900"><%- studentapproved.fName%> <%- studentapproved.lName %></div>
+                                    <div class="text-sm text-gray-500"><%- studentapproved.ID %></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900 font-medium"><%- studentapproved.topic %></div>
+                            <button class="text-blue-600 text-xs hover:underline mt-1 flex items-center" onclick="openModal('assign-modal-<%- studentapproved.ID %>')">
+                                <i class="fas fa-eye mr-1"></i> View details
+                            </button>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <form action="/HOD/HODapproval/assign" method="post" class="flex items-center">
+                                <select class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                        name="supervisorAssigned" id="supervisorName-<%- studentapproved.ID %>">
+                                    <option value="" selected>Not Assigned</option>
+                                    <% listOfSupervisor.forEach(supervisor => { %>
+                                        <option value="<%- supervisor.ID %>">
+                                            <%- supervisor.fName %> <%- supervisor.lName %>
+                                        </option>
+                                    <% }) %>
+                                </select>
+                                <input type="hidden" name="studentID" value="<%- studentapproved.ID %>">
+                                <button type="submit" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center">
+                                    <i class="fas fa-save mr-2"></i> Assign
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
+        
+        document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+                tabContents.forEach(content => content.classList.add('hidden'));
+                
+                // Add active class to clicked button
+                button.classList.remove('border-transparent', 'text-gray-500');
+                button.classList.add('active', 'border-blue-500', 'text-blue-600');
+                
+                // Show corresponding content
+                const tabId = button.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+
+        // Modal functions
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('fixed') && e.target.classList.contains('inset-0')) {
+                const modal = e.target;
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Dropdown functionality
+        document.querySelectorAll('.dropdown-toggle').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.nextElementSibling.classList.toggle('hidden');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(item => {
+                item.classList.add('hidden');
+            });
+        });
+
+        // Close dropdown when clicking on dropdown item
+        document.querySelectorAll('.dropdown-menu a').forEach(item => {
+            item.addEventListener('click', function() {
+                this.closest('.dropdown-menu').classList.add('hidden');
+            });
+        });
+
+        // Auto-close flash messages after 5 seconds
+        setTimeout(() => {
+            const flashMessages = document.querySelectorAll('[class*="bg-green-100"], [class*="bg-red-100"]');
+            flashMessages.forEach(message => {
+                message.style.display = 'none';
+            });
+        }, 5000);
+    </script>
+</body>
 </html>

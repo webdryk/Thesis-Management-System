@@ -1,4 +1,4 @@
-const Student = require('../db/models/Student'); // Update the path to your Student model
+const Student = require('../db/studentdb'); // Update the path to your Student model
 
 async function saveChatMessage(sender, message, studentId) {
   console.log(await Student.findOne({studentId}))

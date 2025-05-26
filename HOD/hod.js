@@ -1,6 +1,6 @@
 const router= require('express').Router()
-const Staff = require('../db/models/Staff')
-const Student = require('../db/models/Student')
+const Staff = require('../db/staffdb')
+const Student = require('../db/studentdb')
 const fs= require('fs')
 const path = require("path");
 
@@ -15,69 +15,173 @@ router.get('/HOD', async(req, res) => {
 });
 
 
-router.get('/HOD/HODapproval',async(req,res)=>{
+const checkHOD = (req, res, next) => {
     if (req.user && req.user.role === 'HOD') {
-        let listOfStudent= await Student.find({department:req.user.department,thesisStatus:'Pending Approval'})
-        let listOfSupervisor = await Staff.find({ role: 'supervisor', department: req.user.department });
-        let listOfPanelist= await Staff.find()
-        let listOfStudentApproved= await Student.find({department:req.user.department, thesisStatus: 'Approved',})
-        let listOfStudentToAssign=await Student.find({department:req.user.department, thesisStatus: 'Approved',supervisor:null})
+        return next();
+    }
+    res.redirect('/login');
+};
+
+// Get all data for HOD approval dashboard
+router.get('/HOD/HODapproval', checkHOD, async (req, res) => {
+    try {
+        const department = req.user.department;
+        
+        // Fetch all data in parallel for better performance
+        const [
+            pendingStudents,
+            supervisors,
+            panelists,
+            approvedStudents,
+            studentsToAssign
+        ] = await Promise.all([
+            Student.find({ 
+                department,
+                thesisStatus: 'Pending Approval of Topic'
+            }),
+            Staff.find({ 
+                role: 'supervisor', 
+                department 
+            }),
+            Staff.find({ department }),
+            Student.find({ 
+                department, 
+                thesisStatus: 'Approved'
+            }),
+            Student.find({ 
+                department, 
+                thesisStatus: 'Approved',
+                supervisor: 'Not Assigned'
+            })
+        ]);
+
+        res.render('HODapproval', {
+            user: req.user,
+            listOfStudent: pendingStudents,
+            listOfSupervisor: supervisors,
+            listOfPanelist: panelists,
+            listOfStudentApproved: approvedStudents,
+            listOfStudentToAssign: studentsToAssign
+        });
+    } catch (error) {
+        console.error('Error fetching HOD approval data:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+//revoke student thesis
+router.post('/HOD/HODapproval/revoke', checkHOD, async (req, res) => {
+    try {
+        const { studentID } = req.body;
+        
+        await Student.findOneAndUpdate(
+            { ID: studentID },{supervisor: 'Not Assigned'});
+            res.redirect('/HOD/HODapproval');
+    } catch (error) {
+        console.error('Error revoking student supervisor:', error);
+    res.status(500).send('Internal Server Error');
+    res.redirect('/HOD/HODapproval');
+    }
+});
         
 
-        // console.log(listOfStudent)
-          res.render('HODapproval', {user:req.user, listOfStudent,listOfSupervisor,listOfPanelist,listOfStudentApproved,listOfStudentToAssign });
-      } else {
-          res.redirect('/login');
-      }
-})
+// Approve student thesis
+router.post('/HOD/HODapproval/approve', checkHOD, async (req, res) => {
+    try {
+        const { studentID } = req.body;
+        
+        await Student.findOneAndUpdate(
+            { ID: studentID },
+            { thesisStatus: 'Approved' },
+            { new: true }
+        );
+        
+        res.redirect('/HOD/HODapproval');
+    } catch (error) {
+        console.error('Error approving student:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
-router.post('/HOD/HODapproval/approve',async(req,res)=>{
-    let approve= req.body.studentID
-   
-    await Student.findOneAndUpdate({ID:approve},{thesisStatus:'Approved'})
+// Reject student thesis
+router.post('/HOD/HODapproval/reject', checkHOD, async (req, res) => {
+    try {
+        const { studentID } = req.body;
+        
+        await Student.findOneAndUpdate(
+            { ID: studentID },
+            { thesisStatus: 'Rejected' },
+            { new: true }
+        );
+        
+        res.redirect('/HOD/HODapproval');
+    } catch (error) {
+        console.error('Error rejecting student:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
-    res.redirect('/HOD/HODapproval')
+// Activate panelist
+router.post('/HOD/HODapproval/activate', checkHOD, async (req, res) => {
+    try {
+        const { staffID } = req.body;
+        
+        await Staff.findOneAndUpdate(
+            { ID: staffID },
+            { panelist: 'activated' },
+            { new: true }
+        );
+        
+        res.redirect('/HOD/HODapproval');
+    } catch (error) {
+        console.error('Error activating panelist:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
-})
+// Deactivate panelist
+router.post('/HOD/HODapproval/deactivate', checkHOD, async (req, res) => {
+    try {
+        const { staffID } = req.body;
+        
+        await Staff.findOneAndUpdate(
+            { ID: staffID },
+            { panelist: 'deactivated' },
+            { new: true }
+        );
+        
+        res.redirect('/HOD/HODapproval');
+    } catch (error) {
+        console.error('Error deactivating panelist:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
-router.post('/HOD/HODapproval/reject',async(req,res)=>{
-    let reject= req.body.studentID
-   
-    await Student.findOneAndUpdate({ID:reject},{thesisStatus:'Rejected'})
-
-    res.redirect('/HOD/HODapproval')
-
-})
-
-router.post('/HOD/HODapproval/activate',async(req,res)=>{
-    let activate= req.body.staffID
-   
-    await Staff.findOneAndUpdate({ID:activate},{panelist:'activated'})
-
-    res.redirect('/HOD/HODapproval')
-
-})
-router.post('/HOD/HODapproval/deactivate',async(req,res)=>{
-    let deactivate= req.body.staffID
-   
-    await Staff.findOneAndUpdate({ID:deactivate},{panelist:'deactivated'})
-
-    res.redirect('/HOD/HODapproval')
-
-})
-
-router.post('/HOD/HODapproval/assign',async(req,res)=>{
-    let studentToBeAssigned= req.body.studentID
-    let supervisorAssigned=req.body.supervisorAssigned
-
-    console.log(studentToBeAssigned)
-    console.log(supervisorAssigned)
-    let assigned=   await Staff.findOne({ID: supervisorAssigned})
-   
-    await Student.findOneAndUpdate({ID:studentToBeAssigned},{supervisor:assigned.fName +" "+assigned.lName, supervisorID:assigned.ID})
-    res.redirect('/HOD/HODapproval')
-
-})
+// Assign student to supervisor
+router.post('/HOD/HODapproval/assign', checkHOD, async (req, res) => {
+    try {
+        const { studentID, supervisorAssigned } = req.body;
+        
+        const supervisor = await Staff.findOne({ ID: supervisorAssigned });
+        if (!supervisor) {
+            return res.status(404).send('Supervisor not found');
+        }
+        
+        await Student.findOneAndUpdate(
+            { ID: studentID },
+            { 
+                supervisor: `${supervisor.fName} ${supervisor.lName}`,
+                supervisorID: supervisor.ID
+            },
+            { new: true }
+        );
+        
+        res.redirect('/HOD/HODapproval');
+    } catch (error) {
+        console.error('Error assigning student:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 router.get('/HOD/students', async(req, res) => {
     if (req.user && req.user.role === 'HOD') {
