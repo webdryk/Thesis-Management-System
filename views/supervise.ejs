@@ -3,388 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- Font Awesome -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-rel="stylesheet"
-/>
-<!-- Google Fonts -->
-<link
-href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-rel="stylesheet"
-/>
-<!-- MDB -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
-rel="stylesheet"
-/>
-
-<style>
-    body {
-  background-color: #fbfbfb;
-}
-@media (min-width: 991.98px) {
-  main {
-    padding-left: 240px;
-  }
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding: 58px 0 0; /* Height of navbar */
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-  width: 240px;
-  z-index: 600;
-}
-
-@media (max-width: 991.98px) {
-  .sidebar {
-    width: 100%;
-  }
-}
-.sidebar .active {
-  border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-}
-
-.sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-</style>
-    <title>Document</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Supervisor Dashboard</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media (min-width: 1024px) {
+            .main-content {
+                margin-left: 16rem;
+            }
+              @keyframes strike {
+        0% { transform: scaleX(0); }
+        100% { transform: scaleX(1); }
+    }
+    .animate-strike {
+        transform-origin: left center;
+        animation: strike 0.5s ease-out forwards;
+    }
+        }
+    </style>
 </head>
-  <body>
-    
-   
-     
-    <!--Main Navigation-->
-<header>
-  <!-- Sidebar -->
-  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-    <div class="position-sticky">
-      <div class="list-group list-group-flush mx-3 mt-4">
-     <a
-          href="/supervisor"
-          class="list-group-item list-group-item-action py-2 ripple"
-          aria-current="true"
-        >
-         <span>Main dashboard</span>
-        </a>
-        <a href="/supervisor" class="list-group-item list-group-item-action py-2 ripple active">
-          <i class=" fa fa-light fa-gauge me-3"></i><span>Dashboard</span>
-        </a>
-        <a href="/supervisor/thesis" class="list-group-item list-group-item-action py-2 ripple"
-          ><i class="fa fa-book fa-fw me-3"></i><span>Thesis</span></a
-        >
-        <a href="/supervisor/students" class="list-group-item list-group-item-action py-2 ripple"
-        ><i class="fa fa-duotone fa-users me-3"></i><span>Students</span></a
-      >
-        <a href="/supervisor/students/message" class="list-group-item list-group-item-action py-2 ripple"
-          ><i class=" fa fa-brands fa-rocketchat me-3"></i><span>Messages</span></a
-        >
-       
-        <a href="/supervisor/approval" class="list-group-item list-group-item-action py-2 ripple"
-        ><i class="fas fa-lock fa-fw me-3"></i><span>Approval</span></a
-      >
-        <!-- <a href="/supervisor/Report" class="list-group-item list-group-item-action py-2 ripple"
-          ><i class="fa fa-duotone fa-marker me-3"></i><span>Report</span></a
-        > -->
-        
-        <a href="/logout" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="fas fa-chart-pie fa-fw me-3"></i><span>LogOut</span>
-        </a>
-       
-      </div>
-    </div>
-  </nav>
-  <!-- Sidebar -->
-
-  <!-- Navbar -->
-  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#sidebarMenu"
-        aria-controls="sidebarMenu"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <!-- Brand -->
-      <a class="navbar-brand" href="#">
-        <!-- <img
-          src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-          height="25"
-          alt="MDB Logo"
-          loading="lazy"
-        /> -->
-      </a>
-     
-       <!-- Right links -->
-       <ul class="navbar-nav ms-auto d-flex flex-row">
-       
-       
-        <li class="nav-item dropdown  me-5">
-          welcome, 
-          <a class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <%- user.fName%>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-          
-          </ul>
-        </li>
-        
-       
-        
-        
-
-
-      </ul>
-    </div>
-    <!-- Container wrapper -->
-      
-  </nav>
-  <!-- Navbar -->
-</header>
-<!--Main Navigation-->
-
-            <!--Main layout-->
-<main style="margin-top: 58px;">
-  <div class="container pt-4  ms-5 me-5 text-center">
-                    
-                    <div class="row mt-5 " style="margin-right: 50px;">
-                        <div class="col-md-4   justify-content-center">
-                            <div class="card text-bg-primary mb-3 " >
-                                <div class="card-header">Project Phase</div>
-                                <div class="card-body ">
-                                  
-                                  <p class="card-text">
-                                    Student: <%- studentdetail.fName +" " + studentdetail.lName%> <br>
-                                    Thesis Status: <%- studentdetail.thesisStatus%>
-                                  
-                                  </p>
-                                  <form action="/supervisor/student/message/<%- studentdetail.ID %>" method="get" style="display: inline; margin-right: 5px;">
-                                    
-                                    <button type="submit" id="approve" class="btn btn-outline-warning" >Message</button>
-                                  </form> 
-                                  
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar - Desktop -->
+        <div class="hidden lg:flex lg:flex-shrink-0">
+            <div class="flex flex-col w-64 fixed h-full">
+                <div class="flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white">
+                    <div class="flex items-center h-16 px-4 border-b border-gray-200">
+                        <h1 class="text-lg font-semibold text-gray-900">Supervisor Dashboard</h1>
+                    </div>
+                    <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                        <div class="px-4 space-y-1">
+                            <a href="/supervisor" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md bg-primary-50 text-primary-700">
+                                <i class="fas fa-gauge mr-3 text-primary-600"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="/supervisor/thesis" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                <i class="fas fa-book mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                <span>Thesis</span>
+                            </a>
+                            <a href="/supervisor/students" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                <i class="fas fa-users mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                <span>Students</span>
+                            </a>
+                            <a href="/supervisor/students/message" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                <i class="fas fa-comments mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                <span>Messages</span>
+                            </a>
+                            <a href="/supervisor/approval" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                <i class="fas fa-lock mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                <span>Approval</span>
+                            </a>
+                            <% if (user.panelist === 'activated') { %>
+                            <a href="/panelist" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                <i class="fas fa-user-group mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                <span>Panelist</span>
+                            </a>
+                            <% } %>
+                            <a href="/logout" class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                <i class="fas fa-right-from-bracket mr-3 text-gray-400 group-hover:text-gray-500"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-gray-200">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                    <span class="text-primary-600 font-medium"><%= user.fName.charAt(0) %></span>
                                 </div>
                             </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-700"><%- user.fName%></p>
+                                <p class="text-xs font-medium text-gray-500">Supervisor</p>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <div class="col">
-                          <div class="card me-5">
-                            <div class="card-body">
-                              <h5>Upload documentation to Student</h5>
-                              <br>
-                                <!-- Add the following code to display the flash message -->
+        <div class="flex flex-col w-full">
+            <!-- Mobile sidebar toggle -->
+            <div class="lg:hidden">
+                <div class="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3">
+                    <div>
+                        <button id="mobile-menu-button" class="text-gray-500 hover:text-gray-600 focus:outline-none">
+                            <i class="fas fa-bars h-6 w-6"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <h1 class="text-lg font-semibold text-gray-900">Dashboard</h1>
+                    </div>
+                    <div class="relative">
+                        <button id="user-menu-button" class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
+                                <span class="text-primary-600 font-medium"><%= user.fName.charAt(0) %></span>
+                            </div>
+                        </button>
+                        <div id="user-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="mobile-menu" class="hidden bg-white shadow-lg">
+                    <div class="px-2 pt-2 pb-3 space-y-1">
+                        <a href="/supervisor" class="block px-3 py-2 rounded-md text-base font-medium bg-primary-50 text-primary-700">
+                            <i class="fas fa-gauge mr-2"></i>Dashboard
+                        </a>
+                        <a href="/supervisor/thesis" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-book mr-2"></i>Thesis
+                        </a>
+                        <a href="/supervisor/students" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-users mr-2"></i>Students
+                        </a>
+                        <a href="/supervisor/students/message" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-comments mr-2"></i>Messages
+                        </a>
+                        <a href="/supervisor/approval" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-lock mr-2"></i>Approval
+                        </a>
+                        <% if (user.panelist === 'activated') { %>
+                        <a href="/panelist" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                            <i class="fas fa-user-group mr-2"></i>Panelist
+                        </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 main-content">
+                <!-- Top Navigation -->
+                <nav class="bg-white shadow-sm">
+                    <div class="flex justify-between items-center px-4 py-3">
+                        <button class="lg:hidden text-gray-500 hover:text-gray-600">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <button class="flex items-center space-x-2">
+                                    <span class="text-gray-700">Welcome, <%- user.fName%></span>
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <span class="text-blue-600 font-medium"><%= user.fName.charAt(0) %></span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Page Content -->
+                <main class="p-4">
+                    <div class="container mx-auto">
+                        <!-- Student Info Card -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-blue-600 text-white rounded-lg shadow p-4">
+                                <div class="text-lg font-medium mb-2">Project Phase</div>
+                                <div>
+                                    <p class="mb-4">
+                                        Student: <%- studentdetail.fName +" " + studentdetail.lName%> <br>
+                                        Thesis Status: <%- studentdetail.thesisStatus%> Completed
+                                    </p>
+                                    <form action="/supervisor/student/message/<%- studentdetail.ID %>" method="get" class="inline-block">
+                                        <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-black px-4 py-2 rounded">Message</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Upload Document Card -->
+                            <div class="lg:col-span-2 bg-white rounded-lg shadow p-4">
+                                <h5 class="text-lg font-medium mb-4">Upload documentation to Student</h5>
+                                
                                 <% if (messages) { %>
-                                  <div class="alert alert-success mt-3" id="flashMessage">
-                                    <%= messages %>
-                                  </div>
+                                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" id="flashMessage">
+                                        <%= messages %>
+                                    </div>
                                 <% } %>
 
-                                <script>
-                                  // Function to remove the flash message after 3 seconds
-                                  function removeFlashMessage() {
-                                    const flashMessage = document.getElementById('flashMessage');
-                                    if (flashMessage) {
-                                      setTimeout(() => {
-                                        flashMessage.style.display = 'none';
-                                      }, 1000); // 3 seconds (3000 milliseconds)
-                                    }
-                                  }
+                                <ul class="text-red-500 mb-4">
+                                    <li class="mb-1">• Ensure documents are in the correct format (i.e., docx)</li>
+                                    <li>• Ensure documents are named according to thesis chapters</li>
+                                </ul>
                                 
-                                  // Call the function when the page is loaded
-                                  window.addEventListener('DOMContentLoaded', () => {
-                                    removeFlashMessage();
-                                  });
-                                </script>
-                                
-
-                                
-                                
-                                
-                                
-                                
-                              
-                              <ul class="text-danger">
-                                <li>Ensure documents are in the correct format (i.e., docx)</li>
-                                <li>Ensure documents are named according to thesis chapters (e.g., Chapter one, chapter 2)</li>
-                              </ul>
-                              <form action="/supervisor/student/upload" method="post" enctype="multipart/form-data">
-                                <!-- Add a hidden input field to store the student ID -->
-                                <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                                <input type="hidden" name="uploaderType" value="supervisor"> <!-- Indicate that the uploader is a supervisor -->
-                                <div class="input-group mb-3 mt-5">
-                                  <!-- Add the "name" attribute to the file input -->
-                                  <input type="file" class="form-control" name="document" id="inputGroupFile02">
-                                  <button class="btn btn-success input-group-text" type="submit" style="color: black;">Upload</button>
-                                </div>
-                              </form>
+                                <form action="/supervisor/student/upload" method="post" enctype="multipart/form-data" class="mt-4">
+                                    <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
+                                    <input type="hidden" name="uploaderType" value="supervisor">
+                                    
+                                    <div class="flex">
+                                        <input type="file" class="flex-grow border border-gray-300 rounded-l px-4 py-2" name="document" id="inputGroupFile02">
+                                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-r" type="submit">Upload</button>
+                                    </div>
+                                </form>
                             </div>
-                          </div>
+                        </div>
+
+                        <!-- Chapter Approval and Uploads Section -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Chapter Approval -->
+       <!-- Chapter Approval -->
+<div class="bg-white rounded-lg shadow">
+    <div class="border-b border-gray-200 p-4">
+        <h3 class="text-lg font-medium">Chapter Approval</h3>
+    </div>
+    <div class="p-4">
+        <ul class="space-y-4">
+            <% 
+            const chapters = ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Formating', 'Defense'];
+            const currentStatus = studentdetail.thesisStatus || '';
+            const currentIndex = chapters.indexOf(currentStatus);
+            
+            chapters.forEach((chapter, index) => {
+                const isCompleted = index <= currentIndex;
+                const isCurrent = index === currentIndex;
+            %>
+                <li class="relative group">
+                    <form action="/chapter" method="post" class="flex items-center justify-between">
+                        <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
+                        <input type="hidden" name="chapter" value="<%= chapter %>">
+                        <% if (isCurrent) { %>
+                            <input type="hidden" name="action" value="revoke">
+                        <% } %>
+                        <div class="flex items-center relative">
+                            <span class="font-medium <%= isCompleted ? 'text-gray-500' : 'text-gray-900' %>">
+                                <%= chapter %>
+                            </span>
+                            <% if (isCompleted) { %>
+                                <span class="ml-2 text-green-500">
+                                    <i class="fas fa-check-circle"></i>
+                                </span>
+                            <% } %>
+                        </div>
+                        <button type="submit" 
+                                class="<%= isCompleted ? (isCurrent ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-300 cursor-not-allowed') : 'bg-blue-600 hover:bg-blue-700' %> text-white px-4 py-1 rounded transition-colors duration-200" 
+                                <%= isCompleted && !isCurrent ? 'disabled' : '' %>>
+                            <%= isCompleted ? (isCurrent ? 'Revoke' : 'Approved') : 'Approve' %>
+                        </button>
+                    </form>
+                    <% if (isCompleted) { %>
+                        <div class="absolute left-0 top-1/2 w-full h-0.5 bg-green-400 transform -translate-y-1/2 z-0 animate-strike"></div>
+                    <% } %>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</div>
+                            <!-- Thesis Uploads -->
+                            <div class="bg-white rounded-lg shadow">
+                                <div class="border-b border-gray-200 p-4">
+                                    <h3 class="text-lg font-medium">Thesis Uploads</h3>
+                                </div>
+                                <div class="p-4">
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full">
+                                            <thead>
+                                                <tr class="border-b border-gray-200">
+                                                    <th class="text-left py-2">File</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="border-b border-gray-200">
+                                                    <td class="py-2">
+                                                        <a href="#" class="text-blue-600 hover:text-blue-800">Thesis Management System-Introduction</a>
+                                                    </td>
+                                                </tr>
+                                                <% studentdetail.uploads.forEach((file) => { %>
+                                                    <% if (file.sender === 'student') { %>
+                                                        <tr class="border-b border-gray-200">
+                                                            <td class="py-2">
+                                                                <a href="/supervisor/students/<%-studentdetail.ID%>/student/<%-file.filename%>" class="text-blue-600 hover:text-blue-800">
+                                                                    <%-file.filename%>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    <% } %>
+                                                <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-
-                <div class="row mt-5 ms-5" style="margin-right: 50px;">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                              Chapter Approval
-                            </div>
-                            <div class="card-body">
-                              <ul class="">
-                                <li class="mt-3 ">
-                                    
-                                    <form action="/chapter" method="post">
-                                      <h5 style="display: inline;">Chapter 1</h5> 
-                                      <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                                      <input type="text" name="chapter"value="chapter 1" hidden>
-                                      <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                                    </form>
-                                        
-                                </li>
-                                <li class="mt-3 ">
-                                    
-                                  <form action="/chapter" method="post">
-                                    <h5 style="display: inline;">Chapter 2</h5>
-                                    <input type="hidden" name="studentID" value="<%- studentdetail.ID %>"> 
-                                    <input type="text" name="chapter" value="chapter 2" hidden>
-                                    <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                                  </form>
-                                      
-                              </li>
-                              <li class="mt-3 ">
-                                    
-                                <form action="/chapter" method="post">
-                                  <h5 style="display: inline;">Chapter 3</h5> 
-                                  <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                                  <input type="text" name="chapter" value="chapter 3" hidden>
-                                  <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                                </form>
-                                    
-                            </li>
-                            <li class="mt-3 ">
-                                    
-                              <form action="/chapter" method="post">
-                                <h5 style="display: inline;">Chapter 4</h5> 
-                                <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                                <input type="text" name="chapter" value="chapter 4" hidden>
-                                <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                              </form>
-                                  
-                          </li>
-                          <li class="mt-3 ">
-                                    
-                            <form action="/chapter" method="post">
-                              <h5 style="display: inline;">Chapter 5</h5> 
-                              <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                              <input type="text" name="chapter" value="chapter 5" hidden>
-                              <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                            </form>
-                                
-                        </li>
-                        <li class="mt-3 ">
-                                    
-                            <form action="/chapter" method="post">
-                              <h5 style="display: inline;">Formating</h5> 
-                              <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                              <input type="text" name="chapter" value="Formating" hidden>
-                              <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                            </form>
-                                
-                        </li>
-                        <li class="mt-3 ">
-                                    
-                            <form action="/chapter" method="post">
-                              <h5 style="display: inline;">Defense</h5> 
-                              <input type="hidden" name="studentID" value="<%- studentdetail.ID %>">
-                              <input type="text" name="chapter" value="Approve For Defense" hidden>
-                              <button type="submit" class="btn bg-primary ms-5">Done</a>
-
-                            </form>
-                                
-                        </li>
-                              </ul>
-                              <!-- <form action="" method="post">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Add Your TODO" aria-describedby="button-addon2">
-                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Add</button>
-                                  </div>
-                              </form> -->
-                              
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                              Thesis uploads
-                            </div>
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                      <tr>
-                                        
-                                        <th scope="col">File</th>
-                             
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                       
-                                        <td><a href="#">Thesis Mangement System-Introduction</a></td>
-                                       
-                                        
-                                      </tr>
-                                      <% studentdetail.uploads.forEach((file) => { %>
-                                        <% if (file.sender === 'student') { %>
-                                          <a href="/supervisor/students/<%-studentdetail.ID%>/student/<%-file.filename%>"><%-file.filename%></a>
-                                          <br>
-                                        <% } %>
-                                      <% }); %>
-                                      
-                                    </tbody>
-                                  </table>
-                            </div>
-                          </div>
-                    </div>
-                </div>
-
+                </main>
             </div>
-            
         </div>
-      </div>
+    </div>
 
-      <script
-  type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  </body>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // User menu toggle
+        document.getElementById('user-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('user-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close menus when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!event.target.closest('#mobile-menu-button') && !event.target.closest('#mobile-menu')) {
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            }
+            
+            if (!event.target.closest('#user-menu-button') && !event.target.closest('#user-menu')) {
+                const menu = document.getElementById('user-menu');
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            }
+        });
+
+        // Remove flash message after 3 seconds
+        function removeFlashMessage() {
+            const flashMessage = document.getElementById('flashMessage');
+            if (flashMessage) {
+                setTimeout(() => {
+                    flashMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            removeFlashMessage();
+        });
+    </script>
+</body>
 </html>

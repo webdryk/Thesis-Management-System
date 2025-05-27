@@ -19,12 +19,6 @@ const server = http.createServer(app);
 const io = socketIO(server);
 require("dotenv").config();
 // creating session
-// app.use(session({
-//   secret: process.env.SESSION_SECRET ,
-//   resave: false,
-//   saveUninitialized: false,
- 
-// }));
 
 app.use(session({
   secret: process.env.SESSION_SECRET,

@@ -231,13 +231,24 @@ console.log(filePath)
 
 router.post('/chapter', async(req, res) => {
   if(req.user && req.user.role === 'supervisor') {
-
-const studentStatus= await Student.findOneAndUpdate({ID:req.body.studentID},{thesisStatus:req.body.chapter})
-
-res.redirect('/supervisor/students/supervise?studentID='+req.body.studentID);
+    const chapters = ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Formating', 'Defense'];
+    const currentStudent = await Student.findOne({ID: req.body.studentID});
+    
+    // Check if we're approving or revoking
+    if (req.body.action === 'revoke') {
+      // Find current chapter index
+      const currentIndex = chapters.indexOf(currentStudent.thesisStatus);
+      // Set status to previous chapter or empty if at first chapter
+      const newStatus = currentIndex > 0 ? chapters[currentIndex - 1] : '';
+      await Student.findOneAndUpdate({ID: req.body.studentID}, {thesisStatus: newStatus});
+    } else {
+      // Normal approval
+      await Student.findOneAndUpdate({ID: req.body.studentID}, {thesisStatus: req.body.chapter});
+    }
+    
+    res.redirect('/supervisor/students/supervise?studentID='+req.body.studentID);
   }
-  
-})
+});
 
 router.get('/supervisor/approval', isAuthenticated, async(req, res) => {
   if (req.user && req.user.role === 'supervisor') {
