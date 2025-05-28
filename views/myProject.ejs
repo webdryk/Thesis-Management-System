@@ -211,30 +211,131 @@
             </div>
 
             <!-- Thesis Reviews Card -->
-            <div class="mt-6 bg-white rounded-lg shadow">
-                <div class="p-4 border-b">
-                    <h3 class="font-semibold">Thesis Reviews files from Supervisor</h3>
-                </div>
-                <div class="p-4">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full">
-                            <tbody class="divide-y">
-                                <% user.uploads.forEach((file) => { %>
-                                    <% if (file.sender === 'supervisor') { %>
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="py-2">
-                                                <a href="/student/<%- user.ID %>/student/<%- file.filename %>" class="text-blue-600 hover:underline">
-                                                    <%- file.filename %>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <% } %>
-                                <% }); %>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+           <div class="mt-6 bg-white rounded-xl shadow-md overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-4 border-b border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+            Thesis Reviews from Supervisor
+        </h3>
+    </div>
+    <div class="p-6">
+        <div class="overflow-hidden rounded-lg border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            File Name
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Type
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Uploaded
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <% user.uploads.forEach((file) => { 
+                        // Format the ISO timestamp to a readable format
+                        const uploadDate = new Date(file.timestamp);
+                        const formattedDate = uploadDate.toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        });
+                        const formattedTime = uploadDate.toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    %>
+                        <% if (file.sender === 'supervisor') { %>
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <a href="/student/<%- user.ID %>/student/<%- file.filename %>" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline">
+                                                <%- file.filename %>
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        Review
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <div class="flex flex-col">
+                                        <span><%- formattedDate %></span>
+                                        <span class="text-xs text-gray-400"><%- formattedTime %></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/student/<%- user.ID %>/student/<%- file.filename %>" class="text-indigo-600 hover:text-indigo-900 mr-4">Download</a>
+                                   
+                                </td>
+                            </tr>
+                        <% } else if (file.sender === 'student') { %>
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <a href="/student/<%- user.ID %>/student/<%- file.filename %>" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline">
+                                                <%- file.filename %>
+                                            </a>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Submission
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <div class="flex flex-col">
+                                        <span><%- formattedDate %></span>
+                                        <span class="text-xs text-gray-400"><%- formattedTime %></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/student/<%- user.ID %>/student/<%- file.filename %>" class="text-indigo-600 hover:text-indigo-900 mr-4">Download</a>
+                                  
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        
+        <% if (user.uploads.length === 0) { %>
+            <div class="text-center py-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                </svg>
+                <h4 class="mt-2 text-sm font-medium text-gray-900">No review files yet</h4>
+                <p class="mt-1 text-sm text-gray-500">Your supervisor hasn't uploaded any review files.</p>
             </div>
+        <% } %>
+    </div>
+</div>
         </div>
     </main>
 

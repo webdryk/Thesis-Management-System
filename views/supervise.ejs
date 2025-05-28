@@ -35,15 +35,9 @@
             .main-content {
                 margin-left: 16rem;
             }
-        @keyframes strike {
-        0% { width: 0; }
-        100% { width: 10%; }
-    }
-    .animate-strike {
-        transform-origin: left center;
-        animation: strike 0.5s ease-out forwards;
-    }
+   
         }
+        
     </style>
 </head>
 <body class="bg-gray-50">
@@ -267,55 +261,140 @@
                             <%= isCompleted ? (isCurrent ? 'Revoke' : 'Approved') : 'Approve' %>
                         </button>
                     </form>
-                    <% if (isCompleted) { %>
-                        <div class="absolute left-0 top-1/2 w-full h-0.5 bg-green-400 transform -translate-y-1/2 z-0 animate-strike"></div>
-                    <% } %>
+                    
                 </li>
             <% }); %>
         </ul>
     </div>
 </div>
-                            <!-- Thesis Uploads -->
-                            <div class="bg-white rounded-lg shadow">
-                                <div class="border-b border-gray-200 p-4">
-                                    <h3 class="text-lg font-medium">Thesis Uploads</h3>
-                                </div>
-                                <div class="p-4">
-                                    <div class="overflow-x-auto">
-                                        <table class="min-w-full">
-                                            <thead>
-                                                <tr class="border-b border-gray-200">
-                                                    <th class="text-left py-2">File</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="border-b border-gray-200">
-                                                    <td class="py-2">
-                                                        <a href="#" class="text-blue-600 hover:text-blue-800">Thesis Management System-Introduction</a>
-                                                    </td>
-                                                </tr>
-                                                <% studentdetail.uploads.forEach((file) => { %>
-                                                    <% if (file.sender === 'student') { %>
-                                                        <tr class="border-b border-gray-200">
-                                                            <td class="py-2">
-                                                                <a href="/supervisor/students/<%-studentdetail.ID%>/student/<%-file.filename%>" class="text-blue-600 hover:text-blue-800">
-                                                                    <%-file.filename%>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    <% } %>
-                                                <% }); %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
+ <!-- Thesis Uploads -->
+<div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-100">
+        <h3 class="text-xl font-semibold text-gray-800 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+            </svg>
+            Thesis Uploads
+        </h3>
     </div>
+    <div class="p-6">
+        <div class="overflow-hidden rounded-lg border border-gray-100">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            File Name
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Source
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Uploaded
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    
+                    <% studentdetail.uploads.forEach((file) => { 
+                        // Format the upload date
+                        const uploadDate = file.timestamp ? new Date(file.timestamp) : new Date();
+                        const formattedDate = uploadDate.toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        });
+                        const formattedTime = uploadDate.toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    %>
+                        <% if (file.sender === 'student') { %>
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <a href="/supervisor/students/<%-studentdetail.ID%>/student/<%-file.filename%>" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline">
+                                                <%-file.filename%>
+                                            </a>
+                                           
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Student
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <div class="flex flex-col">
+                                        <span><%- formattedDate %></span>
+                                        <span class="text-xs text-gray-400"><%- formattedTime %></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/supervisor/students/<%-studentdetail.ID%>/student/<%-file.filename%>" class="text-indigo-600 hover:text-indigo-900 mr-3">Download</a>
+                                   
+                                </td>
+                            </tr>
+                        <% }else if(file.sender === 'supervisor'){ %>
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <a href="/student/<%- studentdetail.ID %>/student/<%- file.filename %>" class="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline">
+                                                <%-file.filename%>
+                                            </a>
+                                           
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        Supervisor
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <div class="flex flex-col">
+                                        <span><%- formattedDate %></span>
+                                        <span class="text-xs text-gray-400"><%- formattedTime %></span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/student/<%- studentdetail.ID %>/student/<%- file.filename %>" class="text-indigo-600 hover:text-indigo-900 mr-3">Download</a>
+                                   
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        
+        <% if (studentdetail.uploads.length === 0) { %>
+            <div class="text-center py-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                </svg>
+                <h4 class="mt-2 text-sm font-medium text-gray-900">No files uploaded yet</h4>
+                <p class="mt-1 text-sm text-gray-500">Files will appear here once uploaded by you or your supervisor.</p>
+            </div>
+        <% } %>
+    </div>
+</div>
+</div>
 
     <script>
         // Mobile menu toggle

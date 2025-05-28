@@ -213,7 +213,7 @@ router.post('/supervisor/student/upload', upload.single("document"), async (req,
   }
 });
 
-router.get('/supervisor/students/:studentID/student/:fileName', isAuthenticated, (req, res) => {
+router.get('/supervisor/students/:studentID/student/:fileName',  (req, res) => {
   const { studentID, fileName } = req.params;
 
   // Build the file path based on studentID, uploaderType, and fileName
