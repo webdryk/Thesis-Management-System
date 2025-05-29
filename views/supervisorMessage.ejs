@@ -1,289 +1,527 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- Font Awesome -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-rel="stylesheet"
-/>
-<!-- Google Fonts -->
-<link
-href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-rel="stylesheet"
-/>
-<!-- MDB -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
-rel="stylesheet"
-/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="<%= socketIOClientScript %>"></script>
+    <title>Messages - <%= student.name %></title>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                200: "#bae6fd",
+                300: "#7dd3fc",
+                400: "#38bdf8",
+                500: "#0ea5e9",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              },
+            },
+          },
+        },
+      };
+    </script>
     <style>
-  
-  
-  .message {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .sent {
+      @media (min-width: 1024px) {
+        .main-content {
+          margin-left: 16rem;
+        }
+      }
 
-    
-    background-color: #FF9800;
-    color: white;
-    text-align: right;
-    border-radius: 5px;
-    padding: 20px;
-    margin-left: 50%;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    text-decoration: none;
-    list-style-type:none;
-  }
-  
-  
-  .received {
-    
-    background-color: #2196F3;
-    color: white;
-    text-align: left;
-    border-radius: 5px;
-    padding: 20px;
-   margin-right: 50%;
-   margin-top: 5px;
-    margin-bottom: 5px;
-    list-style-type:none;
-    }
-    body {
-  background-color: #fbfbfb;
-}
-@media (min-width: 991.98px) {
-  main {
-    padding-left: 240px;
-  }
-}
+      /* Message styles */
+      .sent {
+        background-color: #0ea5e9;
+        color: white;
+        text-align: right;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        margin-left: auto;
+        margin-bottom: 0.5rem;
+        max-width: 75%;
+      }
 
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  padding: 58px 0 0; /* Height of navbar */
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
-  width: 240px;
-  z-index: 600;
-}
+      .received {
+        background-color: #e5e7eb;
+        color: #111827;
+        text-align: left;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        margin-right: auto;
+        margin-bottom: 0.5rem;
+        max-width: 75%;
+      }
 
-@media (max-width: 991.98px) {
-  .sidebar {
-    width: 100%;
-  }
-}
-.sidebar .active {
-  border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-}
-
-.sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: 0.5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-</style>
-    <title>Document</title>
-</head>
-  <body>
-    
-   
-     
-    <!--Main Navigation-->
-<header>
-  <!-- Sidebar -->
-  <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-    <div class="position-sticky">
-      <div class="list-group list-group-flush mx-3 mt-4">
-       <a
-          href="/supervisor"
-          class="list-group-item list-group-item-action py-2 ripple"
-          aria-current="true"
-        >
-         <span>Main dashboard</span>
-        </a>
-        <a href="/supervisor" class="list-group-item list-group-item-action py-2 ripple active">
-          <i class=" fa fa-light fa-gauge me-3"></i><span>Dashboard</span>
-        </a>
-        <a href="/supervisor/thesis" class="list-group-item list-group-item-action py-2 ripple"
-          ><i class="fa fa-book fa-fw me-3"></i><span>Thesis</span></a
-        >
-        <a href="/supervisor/students" class="list-group-item list-group-item-action py-2 ripple"
-        ><i class="fa fa-duotone fa-users me-3"></i><span>Students</span></a
-      >
-        <a href="/supervisor/students/message" class="list-group-item list-group-item-action py-2 ripple"
-          ><i class=" fa fa-brands fa-rocketchat me-3"></i><span>Messages</span></a
-        >
-       
-        <a href="/supervisor/approval" class="list-group-item list-group-item-action py-2 ripple"
-        ><i class="fas fa-lock fa-fw me-3"></i><span>Approval</span></a
-      >
-        <!-- <a href="/supervisor/Report" class="list-group-item list-group-item-action py-2 ripple"
-          ><i class="fa fa-duotone fa-marker me-3"></i><span>Report</span></a
-        > -->
-        
-        <a href="/logout" class="list-group-item list-group-item-action py-2 ripple">
-          <i class="fas fa-chart-pie fa-fw me-3"></i><span>LogOut</span>
-        </a>
-       
-      </div>
-    </div>
-  </nav>
-  <!-- Sidebar -->
-
-  <!-- Navbar -->
-  <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#sidebarMenu"
-        aria-controls="sidebarMenu"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <!-- Brand -->
-      <a class="navbar-brand" href="#">
-        <!-- <img
-          src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-          height="25"
-          alt="MDB Logo"
-          loading="lazy"
-        /> -->
-      </a>
-     
-       <!-- Right links -->
-       <ul class="navbar-nav ms-auto d-flex flex-row">
-       
-       
-        <li class="nav-item dropdown  me-5">
-          welcome, 
-          <a class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <%- user.fName%>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-           
-          
-          </ul>
-        </li>
-        
-       
-        
-        
-
-
-      </ul>
-    </div>
-    <!-- Container wrapper -->
-      
-  </nav>
-  <!-- Navbar -->
-</header>
-<!--Main Navigation-->
-
-            <!--Main layout-->
-<main style="margin-top: 58px;">
-  <div class="container pt-4  ms-5 me-5 text-center">
-                    
-
-                  <div class="card p-3" id="messages" style="height: 500px; overflow-y: scroll; margin-right: 90px;">
-                    <!-- Chat UI -->
-                     <!-- Render saved chat messages -->
-      <% for (const chat of student.chats) { %>
-        <% if (chat.sender === 'supervisor') { %>
-          <li class="sent">You: <%= chat.message %></li>
-        <% } else { %>
-          <li class="received">Student: <%= chat.message %></li>
-        <% } %>
-      <% } %>
-                    </div>
-                    <div class="" style="margin-right: 90px;">
-                    <form id="message-form" action="/supervisor/student/message/<%= studentId %>" method="post">
-                     <div class="input-group " style="margin-top: 10px;">
-                      <input type="text" name="message" class="form-control" id="message-input" autocomplete="off">
-                      <!-- <button class="btn btn-outline-secondary" >Send</button> -->
-                      <button class="btn btn-success input-group-text"  style="color: black;">send</button>
-
-                    </form>
+      /* Custom scrollbar */
+      #messages::-webkit-scrollbar {
+        width: 6px;
+      }
+      #messages::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      #messages::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar - Desktop -->
+      <div class="hidden lg:flex lg:flex-shrink-0">
+        <div class="flex flex-col w-64 fixed h-full">
+          <div
+            class="flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white"
+          >
+            <div class="flex items-center h-16 px-4 border-b border-gray-200">
+              <h1 class="text-lg font-semibold text-gray-900">
+                Supervisor Dashboard
+              </h1>
+            </div>
+            <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+              <div class="px-4 space-y-1">
+                <a
+                  href="/supervisor"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <i
+                    class="fas fa-gauge mr-3 text-gray-400 group-hover:text-gray-500"
+                  ></i>
+                  <span>Dashboard</span>
+                </a>
+                <a
+                  href="/supervisor/thesis"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <i
+                    class="fas fa-book mr-3 text-gray-400 group-hover:text-gray-500"
+                  ></i>
+                  <span>Thesis</span>
+                </a>
+                <a
+                  href="/supervisor/students"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <i
+                    class="fas fa-users mr-3 text-gray-400 group-hover:text-gray-500"
+                  ></i>
+                  <span>Students</span>
+                </a>
+                <a
+                  href="/supervisor/students/message"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md bg-primary-50 text-primary-700"
+                >
+                  <i class="fas fa-comments mr-3 text-primary-600"></i>
+                  <span>Messages</span>
+                </a>
+                <a
+                  href="/supervisor/approval"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <i
+                    class="fas fa-lock mr-3 text-gray-400 group-hover:text-gray-500"
+                  ></i>
+                  <span>Approval</span>
+                </a>
+                <% if (user.panelist === 'activated') { %>
+                <a
+                  href="/panelist"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <i
+                    class="fas fa-user-group mr-3 text-gray-400 group-hover:text-gray-500"
+                  ></i>
+                  <span>Panelist</span>
+                </a>
+                <% } %>
+                <a
+                  href="/logout"
+                  class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                >
+                  <i
+                    class="fas fa-right-from-bracket mr-3 text-gray-400 group-hover:text-gray-500"
+                  ></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </div>
+            <div class="p-4 border-t border-gray-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div
+                    class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center"
+                  >
+                    <span class="text-primary-600 font-medium"
+                      ><%= user.fName.charAt(0) %></span
+                    >
                   </div>
-                    <!-- Socket.io logic -->
-                    <script>
-                      // Connect to the Socket.io server
-                      const socket = io();
-            
-                      // Join the supervisor's room for the selected student
-                      const studentRoom = 'supervisor_<%= user.ID %>_student_<%= studentId %>';
-                      socket.emit('join room', { room: studentRoom });
-            
-                      // Handle received chat messages
-                      socket.on('chat message', (message) => {
-                        const { sender, message: msg } = message;
-                        const messageElement = document.createElement('li');
-                       // Assign class based on the sender
-                      if (sender === 'supervisor') {
-                        messageElement.classList.add('sent');
-                      } else {
-                        messageElement.classList.add('received');
-                      }
-                      messageElement.textContent = `${sender}: ${msg}`;
-                        document.getElementById('messages').appendChild(messageElement);
-                      });
-            
-                      // Handle form submission
-                      document.getElementById('message-form').addEventListener('submit', (event) => {
-                        event.preventDefault();
-                        const input = document.getElementById('message-input');
-                        const message = input.value.trim();
-                        if (message) {
-                          // Emit the chat message to the specific student's room
-                          const studentid= "<%=studentId%>"
-                          socket.emit('chat message', { sender: 'supervisor', room: studentRoom, message ,studentid});
-            
-                          // Display the sent message in the chat UI
-                          const messageElement = document.createElement('li');
-                          messageElement.classList.add('sent');
-                          messageElement.textContent = `You: ${message}`;
-                          document.getElementById('messages').appendChild(messageElement);
-            
-                          input.value = '';
-                        }
-                      });
-                    </script>
-                  </div>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-gray-700">
+                    <%- user.fName%>
+                  </p>
+                  <p class="text-xs font-medium text-gray-500">Supervisor</p>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col w-full">
+        <!-- Mobile sidebar toggle -->
+        <div class="lg:hidden">
+          <div
+            class="flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3"
+          >
+            <div>
+              <button
+                id="mobile-menu-button"
+                class="text-gray-500 hover:text-gray-600 focus:outline-none"
+              >
+                <i class="fas fa-bars h-6 w-6"></i>
+              </button>
             </div>
-            
-        
-      
+            <div class="flex items-center">
+              <h1 class="text-lg font-semibold text-gray-900">Messages</h1>
+            </div>
+            <div class="relative">
+              <button
+                id="user-menu-button"
+                class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
+              >
+                <div
+                  class="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center"
+                >
+                  <span class="text-primary-600 font-medium"
+                    ><%= user.fName.charAt(0) %></span
+                  >
+                </div>
+              </button>
+              <div
+                id="user-menu"
+                class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+              >
+                <div class="py-1">
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Profile</a
+                  >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Settings</a
+                  >
+                  <a
+                    href="/logout"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Logout</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="mobile-menu" class="hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+              <a
+                href="/supervisor"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-gauge mr-2"></i>Dashboard
+              </a>
+              <a
+                href="/supervisor/thesis"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-book mr-2"></i>Thesis
+              </a>
+              <a
+                href="/supervisor/students"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-users mr-2"></i>Students
+              </a>
+              <a
+                href="/supervisor/students/message"
+                class="block px-3 py-2 rounded-md text-base font-medium bg-primary-50 text-primary-700"
+              >
+                <i class="fas fa-comments mr-2"></i>Messages
+              </a>
+              <a
+                href="/supervisor/approval"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-lock mr-2"></i>Approval
+              </a>
+              <% if (user.panelist === 'activated') { %>
+              <a
+                href="/panelist"
+                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-user-group mr-2"></i>Panelist
+              </a>
+              <% } %>
+            </div>
+          </div>
+        </div>
 
-<script
-  type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.js"></script>
+        <!-- Main Content -->
+        <div class="flex-1 main-content">
+          <!-- Top Navigation -->
+          <nav class="bg-white shadow-sm">
+            <div class="flex justify-between items-center px-4 py-3">
+              <button
+                class="lg:hidden text-gray-500 hover:text-gray-600"
+                id="mobile-sidebar-toggle"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="flex items-center space-x-4">
+                <div class="relative">
+                  <button class="flex items-center space-x-2">
+                    <span class="text-gray-700">Welcome, <%- user.fName%></span>
+                    <div
+                      class="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center"
+                    >
+                      <span class="text-primary-600 font-medium"
+                        ><%= user.fName.charAt(0) %></span
+                      >
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+          <!-- Chat Container -->
+          <div class="p-4 lg:p-6">
+            <div class="max-w-4xl bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden max-h-[85vh] flex flex-col">
+              <!-- Chat Header -->
+              <div class="border-b border-gray-200 px-4 py-3 bg-gray-50">
+                <h2 class="text-lg font-medium text-gray-800 flex items-center">
+                  <i class="fas fa-comments text-primary-500 mr-2"></i>
+                  Conversation with <%= student.fName %> <%= student.lName %>
+                </h2>
+              </div>
+
+              <!-- Chat Messages -->
+              <div id="messages" class="flex-1 p-4 overflow-y-auto space-y-2">
+                <% if (student.chats.length === 0) { %>
+                <div
+                  class="h-full flex items-center justify-center text-gray-400"
+                >
+                  <div class="text-center">
+                    <i class="fas fa-comments text-4xl mb-2"></i>
+                    <p>No messages yet</p>
+                    <p class="text-sm mt-1">
+                      Start the conversation with your student
+                    </p>
+                  </div>
+                </div>
+                <% } else { %> <% for (const chat of student.chats) { %> <% if
+                (chat.sender === 'supervisor') { %>
+                <div class="flex justify-end">
+                  <div
+                    class="max-w-xs lg:max-w-md bg-indigo-100 text-indigo-900 rounded-xl p-4"
+                  >
+                    <p><%= chat.message %></p>
+                    <p class="text-xs text-indigo-500 mt-1 text-right">
+                      <%= new Date(chat.timestamp).toLocaleString([], { year:
+                      'numeric', month: 'short', day: 'numeric', hour:
+                      '2-digit', minute:'2-digit' }) %>
+                    </p>
+                  </div>
+                </div>
+                <% } else { %>
+                <div class="flex justify-start">
+                  <div
+                    class="max-w-xs lg:max-w-md bg-gray-200 text-gray-800 rounded-xl p-4"
+                  >
+                    <p><%= chat.message %></p>
+                    <p class="text-xs text-gray-500 mt-1">
+                      <%= new Date(chat.timestamp).toLocaleString([], { year:
+                      'numeric', month: 'short', day: 'numeric', hour:
+                      '2-digit', minute:'2-digit' }) %>
+                    </p>
+                  </div>
+                </div>
+                <% } %> <% } %> <% } %>
+              </div>
+
+              <!-- Message Form -->
+              <div class="border-t border-gray-200 p-4">
+                <form id="message-form" class="flex gap-2">
+                  <input
+                    type="text"
+                    name="message"
+                    id="message-input"
+                    autocomplete="off"
+                    placeholder="Type your message here..."
+                    class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                  <button
+                    type="submit"
+                    class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition flex items-center justify-center w-24"
+                  >
+                    <i class="fas fa-paper-plane mr-2"></i>Send
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Socket.io Script -->
+    <script>
+      // Connect to the Socket.io server
+      const socket = io();
+
+      // Join the supervisor's room for the selected student
+      const studentRoom = "supervisor_<%= user.ID %>_student_<%= studentId %>";
+      socket.emit("join room", { room: studentRoom });
+
+      // Handle received chat messages
+      socket.on("chat message", (message) => {
+        const messagesContainer = document.getElementById("messages");
+
+        const { sender, message: msg, timestamp } = message;
+
+        const messageElement = document.createElement("div");
+        messageElement.className =
+          sender === "supervisor" ? "flex justify-end" : "flex justify-start";
+        const messageBubble = document.createElement("div");
+        messageBubble.className =
+          sender === "supervisor"
+            ? "max-w-xs lg:max-w-md bg-indigo-100 text-indigo-900 rounded-xl p-4"
+            : "max-w-xs lg:max-w-md bg-gray-200 text-gray-800 rounded-xl p-4";
+
+        const messageText = document.createElement("p");
+        messageText.textContent = msg;
+        const timeText = document.createElement("p");
+        timeText.className =
+          sender === "supervisor"
+            ? "text-xs text-indigo-500 mt-1 text-right"
+            : "text-xs text-gray-500 mt-1";
+
+        const formattedDate = new Date(timestamp || new Date()).toLocaleString(
+          [],
+          {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          }
+        );
+        timeText.textContent = formattedDate;
+
+        messageBubble.appendChild(messageText);
+        messageBubble.appendChild(timeText);
+        messageElement.appendChild(messageBubble);
+        messagesContainer.appendChild(messageElement);
+
+        // Scroll to bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      });
+
+      // Handle form submission
+      document
+        .getElementById("message-form")
+        .addEventListener("submit", (event) => {
+          event.preventDefault();
+          const input = document.getElementById("message-input");
+          const message = input.value.trim();
+
+          if (message) {
+            // Emit the chat message to the specific student's room
+            const studentid = "<%=studentId%>";
+            socket.emit("chat message", {
+              sender: "supervisor",
+              room: studentRoom,
+              message,
+              studentid,
+            });
+            // Create and display the sent message
+            const messagesContainer = document.getElementById("messages");
+            const messageElement = document.createElement("div");
+            messageElement.className = "flex justify-end";
+            const messageBubble = document.createElement("div");
+            messageBubble.className =
+              "max-w-xs lg:max-w-md bg-indigo-100 text-indigo-900 rounded-xl p-4";
+
+            const messageText = document.createElement("p");
+            messageText.textContent = message;
+
+            const timeText = document.createElement("p");
+            timeText.className = "text-xs text-indigo-500 mt-1 text-right";
+            timeText.textContent = new Date().toLocaleString([], {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+
+            messageBubble.appendChild(messageText);
+            messageBubble.appendChild(timeText);
+            messageElement.appendChild(messageBubble);
+            messagesContainer.appendChild(messageElement);
+
+            // Clear input and scroll to bottom
+            input.value = "";
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }
+        });
+
+      // Auto-scroll to bottom on load
+      window.addEventListener("load", function () {
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      });
+
+      // Toggle mobile menu
+      document
+        .getElementById("mobile-menu-button")
+        .addEventListener("click", function () {
+          document.getElementById("mobile-menu").classList.toggle("hidden");
+        });
+
+      // Toggle mobile sidebar
+      document
+        .getElementById("mobile-sidebar-toggle")
+        .addEventListener("click", function () {
+          document
+            .querySelector(".hidden.lg\\:flex")
+            .classList.toggle("hidden");
+        });
+
+      // Toggle user menu
+      document
+        .getElementById("user-menu-button")
+        .addEventListener("click", function () {
+          document.getElementById("user-menu").classList.toggle("hidden");
+        });
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
