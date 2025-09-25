@@ -2,69 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Thesis Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThesisTrack - Seamless Thesis Management</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://kit.fontawesome.com/a2e8fae0aa.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Custom styling to apply the Inter font */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800 antialiased">
 
-  <!-- Header -->
-  <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-blue-700">ThesisTrack</h1>
-    <nav class="space-x-4">
-      <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
-      <a href="#features" class="text-gray-600 hover:text-blue-600">Features</a>
-      <a href="#contact" class="text-gray-600 hover:text-blue-600">Contact</a>
-      <a href="/login" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Login</a>
-    </nav>
+  <header class="sticky top-0 z-50 bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="#" class="text-2xl font-extrabold text-indigo-600 tracking-tight">ThesisTrack</a>
+
+        <nav class="hidden md:flex space-x-6 items-center">
+          <a href="#" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-150">Home</a>
+          <a href="#features" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-150">Features</a>
+          <a href="#contact" class="text-gray-600 hover:text-indigo-600 font-medium transition duration-150">Contact</a>
+          <a href="/login" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 font-semibold shadow-md transition duration-150">Login</a>
+        </nav>
+
+        <button id="mobile-menu-button" class="md:hidden p-2 text-gray-500 hover:text-indigo-600 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Home</a>
+        <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Features</a>
+        <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Contact</a>
+        <a href="/login" class="block w-full text-center mt-2 bg-indigo-600 text-white px-3 py-2 rounded-md font-semibold hover:bg-indigo-700 transition duration-150">Login</a>
+      </div>
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="text-center py-20 bg-gradient-to-r from-blue-100 via-white to-purple-100">
-    <h2 class="text-4xl sm:text-5xl font-bold text-blue-800">Manage Your Thesis, Seamlessly</h2>
-    <p class="mt-4 text-lg sm:text-xl text-gray-600 max-w-xl mx-auto">
-      A smart and intuitive platform for students, supervisors, and administrators to manage thesis projects from start to finish.
+  <section class="max-w-7xl mx-auto text-center py-20 sm:py-32 px-6 bg-white">
+    <h2 class="text-4xl sm:text-6xl font-extrabold text-gray-900 leading-tight">
+      Manage Your Thesis, <span class="text-indigo-600">Seamlessly</span>.
+    </h2>
+    <p class="mt-6 text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+      A smart and intuitive platform for students, supervisors, and administrators to manage thesis projects from proposal to final submission.
     </p>
-    <a href="/register" class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">Get Started</a>
+    <a href="/register" class="mt-10 inline-block bg-indigo-600 text-white text-lg px-8 py-3 rounded-xl hover:bg-indigo-700 font-bold shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+      Get Started - It's Free!
+    </a>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" class="py-16 px-6">
-    <h3 class="text-3xl font-bold text-center text-blue-700 mb-12">Key Features</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-300">
-        <i class="fas fa-user-graduate text-3xl text-blue-600 mb-4"></i>
-        <h4 class="text-xl font-semibold mb-2">Student Dashboard</h4>
-        <p class="text-gray-600">Submit proposals, track approvals, and monitor progress in real time.</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-300">
-        <i class="fas fa-chalkboard-teacher text-3xl text-green-600 mb-4"></i>
-        <h4 class="text-xl font-semibold mb-2">Supervisor Panel</h4>
-        <p class="text-gray-600">Review student submissions, give feedback, and approve research phases.</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-300">
-        <i class="fas fa-cogs text-3xl text-purple-600 mb-4"></i>
-        <h4 class="text-xl font-semibold mb-2">Admin Control</h4>
-        <p class="text-gray-600">Manage users, assign supervisors, generate reports, and configure system settings.</p>
+  ---
+
+  <section id="features" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto">
+      <h3 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 mb-16">Core Features Designed For You</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+        <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-indigo-500 hover:shadow-2xl transition duration-300">
+          <div class="flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 text-indigo-600 mb-6">
+            <i class="fas fa-user-graduate text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-900">Student Dashboard</h4>
+          <p class="text-gray-600">Submit proposals, track approval statuses, upload drafts, and monitor your progress with a clean, centralized interface.</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-green-500 hover:shadow-2xl transition duration-300">
+          <div class="flex items-center justify-center h-12 w-12 rounded-full bg-green-100 text-green-600 mb-6">
+            <i class="fas fa-chalkboard-teacher text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-900">Supervisor Panel</h4>
+          <p class="text-gray-600">Efficiently review student submissions, provide inline feedback, approve key research phases, and manage your assigned students.</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-purple-500 hover:shadow-2xl transition duration-300">
+          <div class="flex items-center justify-center h-12 w-12 rounded-full bg-purple-100 text-purple-600 mb-6">
+            <i class="fas fa-cogs text-2xl"></i>
+          </div>
+          <h4 class="text-xl font-bold mb-3 text-gray-900">Admin Control Center</h4>
+          <p class="text-gray-600">Manage user roles, intelligently assign supervisors, generate comprehensive reports, and configure system settings with ease.</p>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Call to Action -->
-  <section class="text-center py-16 bg-blue-700 text-white">
-    <h3 class="text-3xl font-bold mb-4">Ready to streamline your thesis workflow?</h3>
-    <p class="mb-6 text-lg">Join now and simplify thesis tracking for everyone involved.</p>
-    <a href="/studentregister" class="bg-white text-blue-700 px-6 py-3 rounded-lg hover:bg-gray-200">Create an Account</a>
+  ---
+
+  <section class="text-center py-20 bg-indigo-700 text-white">
+    <div class="max-w-4xl mx-auto px-6">
+      <h3 class="text-3xl sm:text-4xl font-extrabold mb-4">
+        Ready to simplify your thesis workflow?
+      </h3>
+      <p class="mb-8 text-xl opacity-90">
+        Join hundreds of universities and researchers using ThesisTrack to achieve better outcomes.
+      </p>
+      <a href="/register" class="bg-white text-indigo-700 text-lg px-8 py-3 rounded-xl hover:bg-gray-200 font-bold shadow-lg">
+        Create Your Free Account Today
+      </a>
+    </div>
   </section>
 
-  <!-- Footer -->
-  <footer id="contact" class="bg-gray-100 py-6 text-center">
-    <p class="text-gray-600">&copy; 2025 ThesisTrack. All rights reserved.</p>
-    <div class="mt-2">
-      <a href="mailto:support@thesistrack.com" class="text-blue-600 hover:underline">support@thesistrack.com</a>
+  ---
+
+  <footer id="contact" class="bg-gray-800 py-10 text-white">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <div class="flex justify-center space-x-6 text-2xl mb-4">
+        <a href="#" class="hover:text-indigo-400 transition duration-150"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-indigo-400 transition duration-150"><i class="fab fa-linkedin-in"></i></a>
+        <a href="mailto:support@thesistrack.com" class="hover:text-indigo-400 transition duration-150"><i class="fas fa-envelope"></i></a>
+      </div>
+      <p class="text-gray-400">&copy; 2025 ThesisTrack. All rights reserved.</p>
+      <div class="mt-2">
+        <a href="mailto:support@thesistrack.com" class="text-indigo-400 hover:text-indigo-300 transition duration-150">support@thesistrack.com</a>
+      </div>
     </div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.getElementById('mobile-menu-button');
+      const menu = document.getElementById('mobile-menu');
+
+      button.addEventListener('click', function() {
+        menu.classList.toggle('hidden');
+      });
+
+      // Close menu when a link is clicked (useful for anchors)
+      const menuLinks = menu.querySelectorAll('a');
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (!menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
